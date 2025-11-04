@@ -22,12 +22,14 @@ public class ClassService {
     private FitnessClassMapper mapper;
     /// --- CRUD OPERATIONS ----
 
+    //Create
     public FitnessClassResponse createClass(FitnessClassCreateRequest dto){
         FitnessClass entity = mapper.toEntity(dto);
         FitnessClass savedEntity = classRepository.save(entity);
         return mapper.toResponse(savedEntity);
     }
 
+    //FindAll
     public List<FitnessClassResponse> getAllClasses() {
         return classRepository.findAll()
                 .stream()
@@ -35,18 +37,22 @@ public class ClassService {
                 .toList();
     }
 
+    //FindById
     public FitnessClassResponse getClassById(String id) {
         FitnessClass entity = classRepository.findById(id)
                 .orElseThrow(() -> new ClassNotFound(id));
         return mapper.toResponse(entity);
     }
 
+
+    //Delete
     public void deleteClass(String id) {
         FitnessClass existing = classRepository.findById(id)
                 .orElseThrow(() -> new ClassNotFound(id));
         classRepository.delete(existing);
     }
 
+    //Update
     public FitnessClassResponse updateClass(String id, FitnessClassUpdateRequest request) {
         FitnessClass existing = classRepository.findById(id)
                 .orElseThrow(() -> new ClassNotFound(id));
