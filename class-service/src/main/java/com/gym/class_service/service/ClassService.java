@@ -1,6 +1,8 @@
 package com.gym.class_service.service;
 
+import com.gym.class_service.dtos.FitnessClassCreateRequest;
 import com.gym.class_service.dtos.FitnessClassDTO;
+import com.gym.class_service.dtos.FitnessClassResponse;
 import com.gym.class_service.exceptions.ClassNotFound;
 import com.gym.class_service.mapper.FitnessClassMapper;
 import com.gym.class_service.models.FitnessClass;
@@ -19,9 +21,12 @@ public class ClassService {
     private FitnessClassMapper mapper;
     /// --- CRUD OPERATIONS ----
 
-    public FitnessClass createClass(FitnessClass fitnessClass){
-        return classRepository.save(fitnessClass);
+    public FitnessClassResponse createClass(FitnessClassCreateRequest dto){
+        FitnessClass entity = mapper.toEntity(dto);
+        FitnessClass savedEntity = classRepository.save(entity);
+        return mapper.toResponse(savedEntity);
     }
+
     public List<FitnessClass> findAll(){
         return classRepository.findAll();
     }
