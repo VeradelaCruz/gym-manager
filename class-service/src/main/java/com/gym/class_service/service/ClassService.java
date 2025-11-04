@@ -1,5 +1,6 @@
 package com.gym.class_service.service;
 
+import com.gym.class_service.exceptions.ClassNotFound;
 import com.gym.class_service.models.FitnessClass;
 import com.gym.class_service.repository.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,18 @@ public class ClassService {
         return classRepository.findAll();
     }
 
-    private FitnessClass findById(String idClass){
+    public FitnessClass findById(String idClass){
         return classRepository.findById(idClass)
-                .orElseThrow(()-> new )
+                .orElseThrow(()-> new ClassNotFound(idClass));
     }
+
+    void deleteById(String idClass){
+        try {
+            classRepository.deleteById(idClass);
+        } catch (Exception e) {
+            throw new ClassNotFound(idClass);
+        }
+    }
+
+    public FitnessClass
 }
