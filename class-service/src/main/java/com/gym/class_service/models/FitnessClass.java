@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 
 @Data
 @Getter @Setter
-@Document(collection = "fitnessClass")
-public class fitnessClass {
+@Document(collection = "FitnessClass")
+public class FitnessClass {
 
     @Id
     private String idClass;
 
-    @NotBlank(message = "fitnessClass name cannot be empty")
+    @NotBlank(message = "FitnessClass name cannot be empty")
     private String name;
 
     @NotBlank(message = "Trainer name cannot be empty")
