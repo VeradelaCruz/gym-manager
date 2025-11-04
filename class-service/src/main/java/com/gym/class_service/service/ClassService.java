@@ -3,6 +3,7 @@ package com.gym.class_service.service;
 import com.gym.class_service.dtos.FitnessClassCreateRequest;
 import com.gym.class_service.dtos.FitnessClassDTO;
 import com.gym.class_service.dtos.FitnessClassResponse;
+import com.gym.class_service.dtos.FitnessClassUpdateRequest;
 import com.gym.class_service.exceptions.ClassNotFound;
 import com.gym.class_service.mapper.FitnessClassMapper;
 import com.gym.class_service.models.FitnessClass;
@@ -27,31 +28,33 @@ public class ClassService {
         return mapper.toResponse(savedEntity);
     }
 
-    public List<FitnessClass> findAll(){
-        return classRepository.findAll();
+    public List<FitnessClassResponse> getAllClasses() {
+        return classRepository.findAll()
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
-    public FitnessClass findById(String idClass){
-        return classRepository.findById(idClass)
-                .orElseThrow(()-> new ClassNotFound(idClass));
+    public FitnessClassResponse getClassById(String id) {
+        FitnessClass entity = classRepository.findById(id)
+                .orElseThrow(() -> new ClassNotFound(id));
+        return mapper.toResponse(entity);
     }
 
-    void deleteById(String idClass){
-        try {
-            classRepository.deleteById(idClass);
-        } catch (Exception e) {
-            throw new ClassNotFound(idClass);
-        }
+    public void deleteClass(String id) {
+        FitnessClass existing = classRepository.findById(id)
+                .orElseThrow(() -> new ClassNotFound(id));
+        classRepository.delete(existing);
     }
 
-    public FitnessClassDTO changeClass(String idClass, FitnessClassDTO dto){
-        FitnessClass  fitnessClass =findById( idClass);
+    public FitnessClassResponse updateClass(String id, FitnessClassUpdateRequest request) {
+        FitnessClass existing = classRepository.findById(id)
+                .orElseThrow(() -> new ClassNotFound(id));
 
-        mapper.updateFromDTO(dto, fitnessClass);
-        FitnessClass saved= classRepository.save(fitnessClass);
+        mapper.updateFromDTO(request, existing); // 👈 Actualiza solo los campos no nulos
 
-        return mapper.toDTO(saved);
-
+        FitnessClass updated = classRepository.save(existing);
+        return mapper.toResponse(updated);
     }
 
 
