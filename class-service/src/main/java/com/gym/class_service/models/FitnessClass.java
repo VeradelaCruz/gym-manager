@@ -1,6 +1,5 @@
 package com.gym.class_service.models;
 
-import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
