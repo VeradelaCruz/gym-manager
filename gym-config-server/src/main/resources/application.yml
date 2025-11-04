@@ -1,0 +1,11 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: gym-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///C:/path/a/tu/config-repo
