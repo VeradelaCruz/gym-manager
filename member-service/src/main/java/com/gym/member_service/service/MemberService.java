@@ -62,5 +62,7 @@ public class MemberService {
 
     }
 
+    /// --- OTHER OPERATIONS -----
+
 
 }

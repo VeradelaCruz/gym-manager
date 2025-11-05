@@ -41,7 +41,7 @@ public class MemberController {
         memberService.deleteById(idMember);
         return ResponseEntity.noContent().build();
     }
-    
+
     @PutMapping("/update/{idMember}")
     public ResponseEntity<MemberDTO> updateMember(
             @PathVariable String idMember,
