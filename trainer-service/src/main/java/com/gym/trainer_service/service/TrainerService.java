@@ -58,6 +58,5 @@ public class TrainerService {
         Trainer updated= trainerRepository.save(trainer);
 
         return mapper.toDto(updated);
-
     }
 }
