@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public class PaymentService {
     @Autowired
-    public PaymentRepository paymentRepository;
+    private PaymentRepository paymentRepository;
 
     @Autowired
-    public PaymentMapper mapper;
+    private PaymentMapper mapper;
 
     /// ----CRUD OPERATIONS---
     //Create

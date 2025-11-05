@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/member")
 public class MemberController {
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
 
     @PostMapping("/add")
     public ResponseEntity<MemberDTO> addMember(

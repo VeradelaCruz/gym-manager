@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/class")
 public class ClassController {
     @Autowired
-    ClassService classService;
+    private ClassService classService;
 
     @PostMapping("/addClass")
     public ResponseEntity<FitnessClassResponse> createClass(

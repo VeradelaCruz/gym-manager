@@ -1,7 +1,6 @@
 package com.gym.class_service.service;
 
 import com.gym.class_service.dtos.FitnessClassCreateRequest;
-import com.gym.class_service.dtos.FitnessClassDTO;
 import com.gym.class_service.dtos.FitnessClassResponse;
 import com.gym.class_service.dtos.FitnessClassUpdateRequest;
 import com.gym.class_service.exceptions.ClassNotFound;
