@@ -49,7 +49,7 @@ public class ReservationService {
     }
 
     //Update
-    public ReservationDTO changePayment(ReservationDTO dto, String idReservation){
+    public ReservationDTO changeReservation(ReservationDTO dto, String idReservation){
         Reservation found= reservationRepository.findById(idReservation)
                 .orElseThrow(()-> new ReservationNotFound(idReservation));
 

@@ -15,7 +15,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping("/add")
-    public ResponseEntity<PaymentDTO> addMember(
+    public ResponseEntity<PaymentDTO> addPayment(
             @Valid @RequestBody PaymentDTO dto){
         PaymentDTO member= paymentService.createPayment(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(member);
