@@ -3,10 +3,8 @@ package com.gym.class_service.controller;
 import com.gym.class_service.dtos.FitnessClassCreateRequest;
 import com.gym.class_service.dtos.FitnessClassResponse;
 import com.gym.class_service.dtos.FitnessClassUpdateRequest;
-import com.gym.class_service.models.FitnessClass;
 import com.gym.class_service.service.ClassService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,14 +31,14 @@ public class ClassController {
         return ResponseEntity.ok(classService.getAllClasses());
     }
 
-    @GetMapping("/id/{id}")
-    public ResponseEntity<FitnessClassResponse> getClassById(@PathVariable String id) {
-        return ResponseEntity.ok(classService.getClassById(id));
+    @GetMapping("/id/{idClass}")
+    public ResponseEntity<FitnessClassResponse> getClassById(@PathVariable String idClass) {
+        return ResponseEntity.ok(classService.getClassById(idClass));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteClass(@PathVariable String id) {
-        classService.deleteClass(id);
+    @DeleteMapping("/delete/{idClass}")
+    public ResponseEntity<Void> deleteClass(@PathVariable String idClass) {
+        classService.deleteClass(idClass);
         return ResponseEntity.noContent().build();
     }
 

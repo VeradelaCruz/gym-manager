@@ -45,7 +45,7 @@ public class MemberService {
     }
 
     //Delete
-    void deleteById(String idMember){
+    public void deleteById(String idMember){
         Member existing= memberRepository.findById(idMember)
                 .orElseThrow(()-> new MemberNotFound(idMember));
         memberRepository.deleteById(existing.getIdMember());
