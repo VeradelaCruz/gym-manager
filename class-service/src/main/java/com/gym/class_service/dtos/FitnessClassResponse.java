@@ -17,10 +17,9 @@ import java.time.LocalDateTime;
 @Builder
 public class FitnessClassResponse {
     private String idClass;
-    @NotBlank(message = "Name can not be empty")
     private String name;
-    @NotBlank(message = "Trainer can not be empty")
     private String trainer;
+
     @Min(value = 1, message = "There must be at least 1 participant")
     private Integer maxParticipants;
     @FutureOrPresent(message = "Schedule must be present or future")

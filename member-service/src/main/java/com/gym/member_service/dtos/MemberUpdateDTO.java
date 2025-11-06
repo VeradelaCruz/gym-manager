@@ -1,8 +1,6 @@
 package com.gym.member_service.dtos;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -15,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberDTO {
+public class MemberUpdateDTO {
 
     private String idMember;
 

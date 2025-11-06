@@ -2,6 +2,7 @@ package com.gym.member_service.controller;
 
 import com.gym.member_service.dtos.MemberDTO;
 import com.gym.member_service.dtos.MemberRequest;
+import com.gym.member_service.dtos.MemberUpdateDTO;
 import com.gym.member_service.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,8 @@ public class MemberController {
     @PutMapping("/update/{idMember}")
     public ResponseEntity<MemberDTO> updateMember(
             @PathVariable String idMember,
-            @Valid @RequestBody MemberRequest request){
-        MemberDTO member= memberService.changeMember(request, idMember);
+            @Valid @RequestBody MemberUpdateDTO update){
+        MemberDTO member= memberService.changeMember(update, idMember);
         return ResponseEntity.ok(member);
     }
 }

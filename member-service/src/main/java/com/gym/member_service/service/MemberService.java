@@ -2,6 +2,7 @@ package com.gym.member_service.service;
 
 import com.gym.member_service.dtos.MemberDTO;
 import com.gym.member_service.dtos.MemberRequest;
+import com.gym.member_service.dtos.MemberUpdateDTO;
 import com.gym.member_service.exception.MemberNotFound;
 import com.gym.member_service.mapper.MemberMapper;
 import com.gym.member_service.models.Member;
@@ -52,11 +53,11 @@ public class MemberService {
     }
 
     //Update
-    public MemberDTO changeMember(MemberRequest memberRequest, String idMember){
+    public MemberDTO changeMember(MemberUpdateDTO memberUpdateDTO, String idMember){
         Member found= memberRepository.findById(idMember)
                 .orElseThrow(()-> new MemberNotFound(idMember));
 
-        mapper.updateFromDto(memberRequest, found);
+        mapper.updateFromDto(memberUpdateDTO, found);
         Member updated= memberRepository.save(found);
         return  mapper.toDto(updated);
 

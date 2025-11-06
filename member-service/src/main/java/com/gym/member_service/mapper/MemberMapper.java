@@ -2,6 +2,7 @@ package com.gym.member_service.mapper;
 
 import com.gym.member_service.dtos.MemberDTO;
 import com.gym.member_service.dtos.MemberRequest;
+import com.gym.member_service.dtos.MemberUpdateDTO;
 import com.gym.member_service.models.Member;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -19,6 +20,6 @@ public interface MemberMapper {
 
      //Upgrades parciales
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDto(MemberRequest dto, @MappingTarget Member entity);
+    void updateFromDto(MemberUpdateDTO dto, @MappingTarget Member entity);
 
 }
