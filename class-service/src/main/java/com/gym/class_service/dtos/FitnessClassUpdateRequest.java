@@ -3,6 +3,7 @@ package com.gym.class_service.dtos;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +17,10 @@ import java.time.LocalDateTime;
 @Builder
 public class FitnessClassUpdateRequest {
 
+    @NotBlank(message = "Name can not be empty")
     private String name;
 
+    @NotBlank(message = "Trainer can not be empty")
     private String trainer;
 
     @Min(value = 1, message = "There must be at least 1 participant")
