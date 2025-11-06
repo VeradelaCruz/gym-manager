@@ -21,13 +21,13 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) {
         if (repository.count() == 0) {
             List<Member> members = List.of(
-                    new Member(null, "Lucía", "Gómez", "lucia.gomez@example.com", "+39 3456789123",
+                    new Member("Memb01", "Lucía", "Gómez", "lucia.gomez@example.com", "+39 3456789123",
                             LocalDate.of(2025, 1, 10), "Premium", true),
-                    new Member(null, "Marco", "Rossi", "marco.rossi@example.com", "+39 3341122456",
+                    new Member("Memb02", "Marco", "Rossi", "marco.rossi@example.com", "+39 3341122456",
                             LocalDate.of(2025, 2, 5), "Basic", true),
-                    new Member(null, "Sofía", "Bianchi", "sofia.bianchi@example.com", "+39 3338765432",
+                    new Member("Memb03", "Sofía", "Bianchi", "sofia.bianchi@example.com", "+39 3338765432",
                             LocalDate.of(2024, 12, 20), "Standard", false),
-                    new Member(null, "Tomás", "Fernández", "tomas.fernandez@example.com", "+39 3895566778",
+                    new Member("Memb04", "Tomás", "Fernández", "tomas.fernandez@example.com", "+39 3895566778",
                             LocalDate.of(2025, 3, 1), "Premium", true)
             );
             repository.saveAll(members);
