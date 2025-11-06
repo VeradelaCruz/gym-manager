@@ -3,6 +3,7 @@ package com.gym.class_service.controller;
 import com.gym.class_service.dtos.FitnessClassCreateRequest;
 import com.gym.class_service.dtos.FitnessClassResponse;
 import com.gym.class_service.dtos.FitnessClassUpdateRequest;
+import com.gym.class_service.models.FitnessClass;
 import com.gym.class_service.service.ClassService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,8 @@ public class ClassController {
     @GetMapping("/all")
     public ResponseEntity<List<FitnessClassResponse>> getAllClasses() {
         return ResponseEntity.ok(classService.getAllClasses());
-    }
+   }
+
 
     @GetMapping("/id/{idClass}")
     public ResponseEntity<FitnessClassResponse> getClassById(@PathVariable String idClass) {

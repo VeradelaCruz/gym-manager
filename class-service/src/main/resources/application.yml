@@ -4,7 +4,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://localhost:27017/gym_classes_db
+      uri: mongodb://localhost:27017/gymdb
 
 eureka:
   client:

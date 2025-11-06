@@ -36,6 +36,7 @@ public class ClassService {
                 .toList();
     }
 
+
     //FindById
     public FitnessClassResponse getClassById(String id) {
         FitnessClass entity = classRepository.findById(id)

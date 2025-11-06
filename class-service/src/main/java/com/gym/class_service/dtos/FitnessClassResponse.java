@@ -15,6 +15,10 @@ public class FitnessClassResponse {
     private String idClass;
     private String name;
     private String trainer;
+    private Integer maxParticipants;
+    private LocalDateTime scheduleDateTime;
+    private Long durationMinutes;
     private Double price;
-    private LocalDateTime createdAt;
+    private boolean active;
 }
+
