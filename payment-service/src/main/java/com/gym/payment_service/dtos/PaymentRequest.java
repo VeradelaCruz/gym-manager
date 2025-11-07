@@ -1,6 +1,8 @@
 package com.gym.payment_service.dtos;
 
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
@@ -13,16 +15,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaymentDTO {
+public class PaymentRequest{
     private String idPayment;
 
+    @NotBlank(message = "Member ID cannot be blank")
     private String member;
 
+    @NotNull(message = "Amount is required")
     @Positive(message = "Amount must be greater than 0")
     private Double amount;
 
+    @NotNull(message = "Payment date is required")
     private LocalDateTime paymentDate;
 
+    @NotNull(message = "Valid until date is required")
     @FutureOrPresent(message = "Valid until date must be in the present or future")
     private LocalDate validUntil;
 }

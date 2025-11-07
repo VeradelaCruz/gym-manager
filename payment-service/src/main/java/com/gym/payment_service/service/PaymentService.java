@@ -1,6 +1,7 @@
 package com.gym.payment_service.service;
 
 import com.gym.payment_service.dtos.PaymentDTO;
+import com.gym.payment_service.dtos.PaymentRequest;
 import com.gym.payment_service.exeption.PaymentNotFound;
 import com.gym.payment_service.mapper.PaymentMapper;
 import com.gym.payment_service.models.Payment;
@@ -20,8 +21,8 @@ public class PaymentService {
 
     /// ----CRUD OPERATIONS---
     //Create
-    public PaymentDTO createPayment(PaymentDTO paymentDTO){
-        Payment payment= mapper.toEntity(paymentDTO);
+    public PaymentDTO createPayment(PaymentRequest paymentRequest){
+        Payment payment= mapper.toEntity(paymentRequest);
         paymentRepository.save(payment);
         return mapper.toDto(payment);
     }
