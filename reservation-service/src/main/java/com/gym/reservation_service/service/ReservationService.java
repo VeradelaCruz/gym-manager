@@ -1,6 +1,8 @@
 package com.gym.reservation_service.service;
 
 import com.gym.reservation_service.dtos.ReservationDTO;
+import com.gym.reservation_service.dtos.ReservationRequest;
+import com.gym.reservation_service.dtos.ReservationUpdateRequest;
 import com.gym.reservation_service.exception.ReservationNotFound;
 import com.gym.reservation_service.mapper.ReservationMapper;
 import com.gym.reservation_service.models.Reservation;
@@ -20,8 +22,8 @@ public class ReservationService {
 
     /// ----CRUD OPERATIONS---
     //Create
-    public ReservationDTO createReservation(ReservationDTO reservationDTO){
-        Reservation reservation= mapper.toEntity(reservationDTO);
+    public ReservationDTO createReservation(ReservationRequest request){
+        Reservation reservation= mapper.toEntity(request);
         reservationRepository.save(reservation);
         return mapper.toDto(reservation);
     }
@@ -49,7 +51,7 @@ public class ReservationService {
     }
 
     //Update
-    public ReservationDTO changeReservation(ReservationDTO dto, String idReservation){
+    public ReservationDTO changeReservation(ReservationUpdateRequest dto, String idReservation){
         Reservation found= reservationRepository.findById(idReservation)
                 .orElseThrow(()-> new ReservationNotFound(idReservation));
 

@@ -1,9 +1,11 @@
 package com.gym.payment_service.controller;
 
 import com.gym.payment_service.dtos.PaymentDTO;
+import com.gym.payment_service.dtos.PaymentRequest;
 import com.gym.payment_service.dtos.PaymentUpdateRequest;
 import com.gym.payment_service.service.PaymentService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
+    @Autowired
     private PaymentService paymentService;
 
     @PostMapping("/add")
     public ResponseEntity<PaymentDTO> addPayment(
-            @Valid @RequestBody PaymentDTO dto){
+            @Valid @RequestBody PaymentRequest dto){
         PaymentDTO member= paymentService.createPayment(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(member);
     }
