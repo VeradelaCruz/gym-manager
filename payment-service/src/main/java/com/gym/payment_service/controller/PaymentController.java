@@ -1,6 +1,7 @@
 package com.gym.payment_service.controller;
 
 import com.gym.payment_service.dtos.PaymentDTO;
+import com.gym.payment_service.dtos.PaymentUpdateRequest;
 import com.gym.payment_service.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class PaymentController {
     @PutMapping("/update/{idPayment}")
     public ResponseEntity<PaymentDTO> updatePayment(
             @PathVariable String idPayment,
-            @Valid @RequestBody PaymentDTO dto){
+            @Valid @RequestBody PaymentUpdateRequest dto){
         PaymentDTO member= paymentService.changePayment(dto, idPayment);
         return ResponseEntity.ok(member);
     }

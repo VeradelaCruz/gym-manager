@@ -2,6 +2,7 @@ package com.gym.payment_service.service;
 
 import com.gym.payment_service.dtos.PaymentDTO;
 import com.gym.payment_service.dtos.PaymentRequest;
+import com.gym.payment_service.dtos.PaymentUpdateRequest;
 import com.gym.payment_service.exeption.PaymentNotFound;
 import com.gym.payment_service.mapper.PaymentMapper;
 import com.gym.payment_service.models.Payment;
@@ -50,11 +51,11 @@ public class PaymentService {
     }
 
     //Update
-    public PaymentDTO changePayment(PaymentDTO dto, String idPayment){
+    public PaymentDTO changePayment(PaymentUpdateRequest request, String idPayment){
         Payment found= paymentRepository.findById(idPayment)
                 .orElseThrow(()-> new PaymentNotFound(idPayment));
 
-        mapper.updateFromDto(dto, found);
+        mapper.updateFromDto(request, found);
         Payment updated= paymentRepository.save(found);
         return  mapper.toDto(updated);
 
