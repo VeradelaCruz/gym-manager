@@ -2,6 +2,7 @@ package com.gym.trainer_service.controller;
 
 import com.gym.trainer_service.dtos.TrainerDTO;
 import com.gym.trainer_service.dtos.TrainerRequest;
+import com.gym.trainer_service.dtos.TrainerUpdateRequest;
 import com.gym.trainer_service.service.TrainerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class TrainerController {
     @PutMapping("/update/{idTrainer}")
     public ResponseEntity<TrainerDTO> updateMember(
             @PathVariable String idTrainer,
-            @Valid @RequestBody TrainerRequest request){
+            @Valid @RequestBody TrainerUpdateRequest request){
         TrainerDTO trainer = trainerService.changeTrainer(idTrainer, request);
         return ResponseEntity.ok(trainer);
     }

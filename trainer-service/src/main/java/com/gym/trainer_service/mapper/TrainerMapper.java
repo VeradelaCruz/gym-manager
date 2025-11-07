@@ -2,6 +2,7 @@ package com.gym.trainer_service.mapper;
 
 import com.gym.trainer_service.dtos.TrainerDTO;
 import com.gym.trainer_service.dtos.TrainerRequest;
+import com.gym.trainer_service.dtos.TrainerUpdateRequest;
 import com.gym.trainer_service.models.Trainer;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -19,5 +20,5 @@ public interface TrainerMapper {
 
     //Actualizacion parcial
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDto(TrainerRequest request, @MappingTarget Trainer entity);
+    void updateFromDto(TrainerUpdateRequest request, @MappingTarget Trainer entity);
 }

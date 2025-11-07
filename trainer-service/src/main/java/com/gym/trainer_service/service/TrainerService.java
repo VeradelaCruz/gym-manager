@@ -2,6 +2,7 @@ package com.gym.trainer_service.service;
 
 import com.gym.trainer_service.dtos.TrainerDTO;
 import com.gym.trainer_service.dtos.TrainerRequest;
+import com.gym.trainer_service.dtos.TrainerUpdateRequest;
 import com.gym.trainer_service.exception.TrainerNotFound;
 import com.gym.trainer_service.mapper.TrainerMapper;
 import com.gym.trainer_service.models.Trainer;
@@ -51,10 +52,10 @@ public class TrainerService {
     }
 
     //Update
-    public TrainerDTO changeTrainer(String idTrainer, TrainerRequest trainerRequest){
+    public TrainerDTO changeTrainer(String idTrainer, TrainerUpdateRequest updateRequest){
         Trainer trainer= trainerRepository.findById(idTrainer)
                 .orElseThrow(()-> new TrainerNotFound(idTrainer));
-        mapper.updateFromDto(trainerRequest, trainer);
+        mapper.updateFromDto(updateRequest, trainer);
         Trainer updated= trainerRepository.save(trainer);
 
         return mapper.toDto(updated);
