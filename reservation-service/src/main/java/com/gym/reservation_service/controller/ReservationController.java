@@ -1,6 +1,8 @@
 package com.gym.reservation_service.controller;
 
 import com.gym.reservation_service.dtos.ReservationDTO;
+import com.gym.reservation_service.dtos.ReservationRequest;
+import com.gym.reservation_service.dtos.ReservationUpdateRequest;
 import com.gym.reservation_service.service.ReservationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class ReservationController {
 
     @PostMapping("/add")
     public ResponseEntity<ReservationDTO> addReservation(
-            @Valid @RequestBody ReservationDTO dto){
+            @Valid @RequestBody ReservationRequest dto){
         ReservationDTO member= reservationService.createReservation(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(member);
     }
@@ -44,7 +46,7 @@ public class ReservationController {
     @PutMapping("/update/{idReservation}")
     public ResponseEntity<ReservationDTO> updatePayment(
             @PathVariable String idReservation,
-            @Valid @RequestBody ReservationDTO dto){
+            @Valid @RequestBody ReservationUpdateRequest dto){
         ReservationDTO member= reservationService.changeReservation(dto, idReservation);
         return ResponseEntity.ok(member);
     }
