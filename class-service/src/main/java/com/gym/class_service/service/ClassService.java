@@ -2,6 +2,7 @@ package com.gym.class_service.service;
 
 import com.gym.class_service.dtos.*;
 import com.gym.class_service.exceptions.ClassNotFound;
+import com.gym.class_service.exceptions.ClassWithTrainerNotFound;
 import com.gym.class_service.exceptions.TrainerNotFound;
 import com.gym.class_service.feign.TrainerClient;
 import com.gym.class_service.mapper.FitnessClassMapper;
@@ -74,14 +75,21 @@ public class ClassService {
         //Buscar la clase
         FitnessClassResponse classResponse = getClassById(idClass);
 
-        //Traer al entrenador:
-        TrainerDTO trainerDTO;
+        TrainerDTO trainerDTO = null;
+
+        // Verificar si la clase tiene entrenador asignado
+        if (classResponse.getTrainer() == null || classResponse.getTrainer().isBlank()) {
+            throw new ClassWithTrainerNotFound(classResponse.getIdClass(), "N/A");
+        }
 
         try {
+            // Llamar al microservicio de entrenadores
             trainerDTO = trainerClient.getById(classResponse.getTrainer()).getBody();
         } catch (FeignException.NotFound e) {
+            // Si el entrenador no existe en el microservicio remoto
             throw new TrainerNotFound("Trainer not found for id " + classResponse.getTrainer());
         }
+
 
         //Armar el dto
         return ClassWithTrainer.builder()

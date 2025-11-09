@@ -4,6 +4,7 @@ import com.gym.class_service.dtos.ClassWithTrainer;
 import com.gym.class_service.dtos.FitnessClassCreateRequest;
 import com.gym.class_service.dtos.FitnessClassResponse;
 import com.gym.class_service.dtos.FitnessClassUpdateRequest;
+import com.gym.class_service.exceptions.ClassWithTrainerNotFound;
 import com.gym.class_service.models.FitnessClass;
 import com.gym.class_service.service.ClassService;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ public class ClassController {
     @GetMapping("/all")
     public ResponseEntity<List<FitnessClassResponse>> getAllClasses() {
         return ResponseEntity.ok(classService.getAllClasses());
-   }
+    }
 
 
     @GetMapping("/id/{idClass}")
@@ -56,12 +57,8 @@ public class ClassController {
 
     @GetMapping("/class/{idClass}/with-trainer")
     public ResponseEntity<ClassWithTrainer> getClassWithTrainer(@PathVariable String idClass) {
-        try{
-            ClassWithTrainer dto= classService.findClassWithTrainer(idClass);
-            return ResponseEntity.ok(dto);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return ResponseEntity.ok(classService.findClassWithTrainer(idClass));
     }
+
 
 }
