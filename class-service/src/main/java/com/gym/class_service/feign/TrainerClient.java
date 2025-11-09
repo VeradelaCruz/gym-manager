@@ -1,4 +1,4 @@
-package com.gym.class_service.feing;
+package com.gym.class_service.feign;
 
 import com.gym.class_service.dtos.TrainerDTO;
 import org.springframework.cloud.openfeign.FeignClient;

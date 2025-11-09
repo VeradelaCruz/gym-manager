@@ -3,7 +3,7 @@ package com.gym.class_service.service;
 import com.gym.class_service.dtos.*;
 import com.gym.class_service.exceptions.ClassNotFound;
 import com.gym.class_service.exceptions.TrainerNotFound;
-import com.gym.class_service.feing.TrainerClient;
+import com.gym.class_service.feign.TrainerClient;
 import com.gym.class_service.mapper.FitnessClassMapper;
 import com.gym.class_service.models.FitnessClass;
 import com.gym.class_service.repository.ClassRepository;
@@ -75,7 +75,7 @@ public class ClassService {
         FitnessClassResponse classResponse = getClassById(idClass);
 
         //Traer al entrenador:
-        TrainerDTO trainerDTO; // ✅ Declaración fuera del try
+        TrainerDTO trainerDTO;
 
         try {
             trainerDTO = trainerClient.getById(classResponse.getTrainer()).getBody();
@@ -93,6 +93,8 @@ public class ClassService {
                 .trainerDTO(trainerDTO)
                 .build();
     }
+
+
 
 
 
