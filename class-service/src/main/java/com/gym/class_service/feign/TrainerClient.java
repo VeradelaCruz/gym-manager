@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "trainer-service")
+@FeignClient(name = "trainer-service", url = "http://localhost:8084")
 public interface TrainerClient {
-    @GetMapping("/id/{idTrainer}")
+    @GetMapping("/trainer/id/{idTrainer}")
     ResponseEntity<TrainerDTO> getById(@PathVariable String idTrainer);
 }
