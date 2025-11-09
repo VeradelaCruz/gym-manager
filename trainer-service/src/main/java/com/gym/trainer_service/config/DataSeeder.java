@@ -23,7 +23,10 @@ public class DataSeeder implements CommandLineRunner {
                     new Trainer("Train01", "Laura", "Martínez", "laura.martinez@gymfit.com", "Yoga"),
                     new Trainer("Train02", "Carlos", "Fernández", "carlos.fernandez@gymfit.com", "CrossFit"),
                     new Trainer("Train03", "Valentina", "Rossi", "valentina.rossi@gymfit.com", "Pilates"),
-                    new Trainer("Train04", "Diego", "López", "diego.lopez@gymfit.com", "Boxeo")
+                    new Trainer("Train04", "Diego", "López", "diego.lopez@gymfit.com", "Boxeo"),
+                    new Trainer("Train05", "Sofía", "Ramírez", "sofia.ramirez@gymfit.com", "Spinning"),
+                    new Trainer("Train06", "David", "Rojas", "david.rojas@gymfit.com", "HIIT"),
+                    new Trainer("Train07", "Mariana", "López", "mariana.lopez@gymfit.com", "Pilates")
             );
             repository.saveAll(trainers);
             System.out.println("✅ Datos iniciales de entrenadores cargados correctamente");

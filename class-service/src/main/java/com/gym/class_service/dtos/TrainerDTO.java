@@ -1,9 +1,7 @@
 package com.gym.class_service.dtos;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.springframework.data.mongodb.core.index.Indexed;
 
 @Data
 @Getter

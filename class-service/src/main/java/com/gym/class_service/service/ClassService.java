@@ -70,28 +70,30 @@ public class ClassService {
 
     /// ----OTHER OPERATIONS----
 
-    //Get Class with Trainer
     public ClassWithTrainer findClassWithTrainer(String idClass) {
-        //Buscar la clase
+        // Buscar la clase
         FitnessClassResponse classResponse = getClassById(idClass);
 
-        TrainerDTO trainerDTO = null;
-
-        // Verificar si la clase tiene entrenador asignado
+        // Verificar que la clase tenga un entrenador asignado
         if (classResponse.getTrainer() == null || classResponse.getTrainer().isBlank()) {
             throw new ClassWithTrainerNotFound(classResponse.getIdClass(), "N/A");
         }
 
+        // Llamar al microservicio de entrenadores
+        TrainerDTO trainerDTO;
         try {
-            // Llamar al microservicio de entrenadores
             trainerDTO = trainerClient.getById(classResponse.getTrainer()).getBody();
+            if (trainerDTO == null) {
+                // Esto es opcional, por si el cuerpo viene vacío
+                throw new TrainerNotFound( classResponse.getTrainer());
+            }
         } catch (FeignException.NotFound e) {
-            // Si el entrenador no existe en el microservicio remoto
-            throw new TrainerNotFound("Trainer not found for id " + classResponse.getTrainer());
+            throw new TrainerNotFound( classResponse.getTrainer());
+        } catch (FeignException e) {
+            throw new RuntimeException("Error calling trainer-service: " + e.getMessage());
         }
 
-
-        //Armar el dto
+        // Armar y devolver DTO
         return ClassWithTrainer.builder()
                 .idClass(idClass)
                 .name(classResponse.getName())
@@ -101,6 +103,7 @@ public class ClassService {
                 .trainerDTO(trainerDTO)
                 .build();
     }
+
 
 
 

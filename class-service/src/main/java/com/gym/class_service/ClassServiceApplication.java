@@ -7,7 +7,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.gym.class_service.feign")
+
 public class ClassServiceApplication {
 
 	public static void main(String[] args) {
