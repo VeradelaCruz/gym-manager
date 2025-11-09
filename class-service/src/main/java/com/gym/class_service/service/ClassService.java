@@ -1,12 +1,13 @@
 package com.gym.class_service.service;
 
-import com.gym.class_service.dtos.FitnessClassCreateRequest;
-import com.gym.class_service.dtos.FitnessClassResponse;
-import com.gym.class_service.dtos.FitnessClassUpdateRequest;
+import com.gym.class_service.dtos.*;
 import com.gym.class_service.exceptions.ClassNotFound;
+import com.gym.class_service.exceptions.TrainerNotFound;
+import com.gym.class_service.feing.TrainerClient;
 import com.gym.class_service.mapper.FitnessClassMapper;
 import com.gym.class_service.models.FitnessClass;
 import com.gym.class_service.repository.ClassRepository;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ public class ClassService {
 
     @Autowired
     private FitnessClassMapper mapper;
+
+    @Autowired
+    private TrainerClient trainerClient;
     /// --- CRUD OPERATIONS ----
 
     //Create
@@ -38,9 +42,9 @@ public class ClassService {
 
 
     //FindById
-    public FitnessClassResponse getClassById(String id) {
-        FitnessClass entity = classRepository.findById(id)
-                .orElseThrow(() -> new ClassNotFound(id));
+    public FitnessClassResponse getClassById(String idClass) {
+        FitnessClass entity = classRepository.findById(idClass)
+                .orElseThrow(() -> new ClassNotFound(idClass));
         return mapper.toResponse(entity);
     }
 
@@ -62,6 +66,34 @@ public class ClassService {
         FitnessClass updated = classRepository.save(existing);
         return mapper.toResponse(updated);
     }
+
+    /// ----OTHER OPERATIONS----
+
+    //Get Class with Trainer
+    public ClassWithTrainer findClassWithTrainer(String idClass) {
+        //Buscar la clase
+        FitnessClassResponse classResponse = getClassById(idClass);
+
+        //Traer al entrenador:
+        TrainerDTO trainerDTO; // ✅ Declaración fuera del try
+
+        try {
+            trainerDTO = trainerClient.getById(classResponse.getTrainer()).getBody();
+        } catch (FeignException.NotFound e) {
+            throw new TrainerNotFound("Trainer not found for id " + classResponse.getTrainer());
+        }
+
+        //Armar el dto
+        return ClassWithTrainer.builder()
+                .idClass(idClass)
+                .name(classResponse.getName())
+                .maxParticipants(classResponse.getMaxParticipants())
+                .durationMinutes(classResponse.getDurationMinutes())
+                .scheduleDateTime(classResponse.getScheduleDateTime())
+                .trainerDTO(trainerDTO)
+                .build();
+    }
+
 
 
 

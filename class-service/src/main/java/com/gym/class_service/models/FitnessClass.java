@@ -27,3 +27,5 @@ public class FitnessClass {
     private boolean active;
 }
 
+
+
