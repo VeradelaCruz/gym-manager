@@ -30,4 +30,12 @@ public class GlobalHandlerException {
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
+    @ExceptionHandler(ClassWithTrainerNotFound.class)
+    public ResponseEntity<Map<String, String>> ClassWithTrainerNotFoundHandler(ClassWithTrainerNotFound ex){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Resource not found");
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
 }

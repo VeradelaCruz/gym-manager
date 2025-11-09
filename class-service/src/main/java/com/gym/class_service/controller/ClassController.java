@@ -56,7 +56,12 @@ public class ClassController {
 
     @GetMapping("/class/{idClass}/with-trainer")
     public ResponseEntity<ClassWithTrainer> getClassWithTrainer(@PathVariable String idClass) {
-        return ResponseEntity.ok(classService.findClassWithTrainer(idClass));
+        try{
+            ClassWithTrainer dto= classService.findClassWithTrainer(idClass);
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
