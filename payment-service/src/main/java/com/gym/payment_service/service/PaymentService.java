@@ -8,10 +8,14 @@ import com.gym.payment_service.mapper.PaymentMapper;
 import com.gym.payment_service.models.Payment;
 import com.gym.payment_service.repository.PaymentRepository;
 import feign.FeignException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PaymentService {
@@ -74,7 +78,7 @@ public class PaymentService {
         //Traer el miembro del otro microservicio:
         MemberDTO memberDTO;
         try {
-            MemberDTO member = memberClient.getById(payment.getMember()).getBody();
+            memberDTO  = memberClient.getById(payment.getMember()).getBody();
         }catch (FeignException.NotFound e) {
             throw new MemberNotFound( payment.getMember());
         } catch (FeignException e) {
@@ -87,12 +91,47 @@ public class PaymentService {
                 .amount(payment.getAmount())
                 .paymentDate(payment.getPaymentDate())
                 .validUntil(payment.getValidUntil())
-                .memberDTO(member)
+                .memberDTO(memberDTO)
                 .build();
     }
 
     //Get valid members:
+        public List<ValidMember> findValidMembers() {
+            // Traer todos los pagos
+            List<PaymentDTO> payments = paymentRepository.findAll()
+                    .stream()
+                    .map(mapper::toDto)
+                    .toList();
 
+            // Fecha actual
+            LocalDate today = LocalDate.now();
 
+            // Filtrar y construir lista de miembros válidos
+            return payments.stream()
+                    .filter(p -> p.getValidUntil() != null && !p.getValidUntil().isBefore(today)) // pago vigente
+                    .map(payment -> {
+                        // Consultar microservicio de miembros
+                        ResponseEntity<MemberDTO> response = memberClient.getById(payment.getMember());
+                        MemberDTO member = response.getBody();
 
+                        // Validar que el miembro exista y esté activo
+                        if (member != null && Boolean.TRUE.equals(member.getActive())) {
+                            return ValidMember.builder()
+                                    .idPayment(payment.getIdPayment())
+                                    .amount(payment.getAmount())
+                                    .paymentDate(payment.getPaymentDate())
+                                    .validUntil(payment.getValidUntil())
+                                    .idMember(member.getIdMember())
+                                    .name(member.getName())
+                                    .lastName(member.getLastName())
+                                    .membershipStartDate(member.getMembershipStartDate())
+                                    .membershipType(member.getMembershipType())
+                                    .build();
+                        }
+                        return null;
+                    })
+                    .filter(Objects::nonNull)
+                    .toList();
+        }
 }
+
