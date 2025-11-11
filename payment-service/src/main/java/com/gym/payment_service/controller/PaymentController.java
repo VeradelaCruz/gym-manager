@@ -45,8 +45,8 @@ public class PaymentController {
     public ResponseEntity<PaymentDTO> updatePayment(
             @PathVariable String idPayment,
             @Valid @RequestBody PaymentUpdateRequest dto){
-        PaymentDTO member= paymentService.changePayment(dto, idPayment);
-        return ResponseEntity.ok(member);
+        PaymentDTO payment= paymentService.changePayment(dto, idPayment);
+        return ResponseEntity.ok(payment);
     }
 
     @GetMapping("/{idPayment}/with-member")

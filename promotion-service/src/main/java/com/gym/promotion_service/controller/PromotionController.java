@@ -1,13 +1,53 @@
 package com.gym.promotion_service.controller;
 
+import com.gym.promotion_service.dtos.PromotionDTO;
+import com.gym.promotion_service.dtos.PromotionRequest;
+import com.gym.promotion_service.dtos.PromotionUpdateRequest;
 import com.gym.promotion_service.service.PromotionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/promotion")
 public class PromotionController {
     @Autowired
     private PromotionService promotionService;
+
+    @PostMapping("/add")
+    public ResponseEntity<PromotionDTO> addPromotion(
+            @Valid @RequestBody PromotionRequest dto){
+        PromotionDTO member= promotionService.createPayment(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(member);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<PromotionDTO>> getAll(){
+        return ResponseEntity.ok(
+                promotionService.getAll()
+        );
+    }
+
+    @GetMapping("/id/{idPayment}")
+    public ResponseEntity<PromotionDTO> getById(@PathVariable String idPayment){
+        return ResponseEntity.ok(promotionService.getById(idPayment));
+    }
+
+    @DeleteMapping("/delete/{idPayment}")
+    public ResponseEntity<Void> deletePayment(@PathVariable String idPayment){
+        promotionService.deleteById(idPayment);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/update/{idPayment}")
+    public ResponseEntity<PromotionDTO> updatePayment(
+            @PathVariable String idPayment,
+            @Valid @RequestBody PromotionUpdateRequest dto){
+        PromotionDTO promotion= promotionService.changePromotion(dto, idPayment);
+        return ResponseEntity.ok(promotion);
+    }
 }
