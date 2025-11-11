@@ -9,7 +9,10 @@ import java.util.List;
 
 @FeignClient(name = "promotion-service")
 public interface PromotionClient {
-    @GetMapping("/all")
+    @GetMapping("/promotion/all")
      ResponseEntity<List<PromotionDTO>> getAll();
+
+    @GetMapping("/promotion/active")
+     ResponseEntity<List<PromotionDTO>> getActive();
 
 }

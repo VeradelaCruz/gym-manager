@@ -51,8 +51,8 @@ public class PromotionController {
         return ResponseEntity.ok(promotion);
     }
 
-    @GetMapping("/getValidPromotions")
-    public ResponseEntity<List<PromotionDTO>> getValidPromotion(){
+    @GetMapping("/active")
+    public ResponseEntity<List<PromotionDTO>> getActive(){
         return ResponseEntity.ok(promotionService.getActivePromotions());
     }
 }

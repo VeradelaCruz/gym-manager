@@ -4,6 +4,7 @@ import com.gym.payment_service.dtos.*;
 import com.gym.payment_service.exeption.MemberNotFound;
 import com.gym.payment_service.exeption.PaymentNotFound;
 import com.gym.payment_service.feign.MemberClient;
+import com.gym.payment_service.feign.PromotionClient;
 import com.gym.payment_service.mapper.PaymentMapper;
 import com.gym.payment_service.models.Payment;
 import com.gym.payment_service.repository.PaymentRepository;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,13 +30,35 @@ public class PaymentService {
     @Autowired
     private MemberClient memberClient;
 
+    @Autowired
+    private PromotionClient promotionClient;
+
     /// ----CRUD OPERATIONS---
-    //Create
-    public PaymentDTO createPayment(PaymentRequest paymentRequest){
-        Payment payment= mapper.toEntity(paymentRequest);
+    //Create payment with a promotion ,  if available
+    public PaymentDTO createPayment(PaymentRequest paymentRequest) {
+        Payment payment = mapper.toEntity(paymentRequest);
+        LocalDate today = LocalDate.now();
+
+        // Traer todas las promociones
+        List<PromotionDTO> promotions = promotionClient.getAll().getBody();
+
+        if (promotions != null) {
+            promotions.stream()
+                    .filter(promo -> promo.getStartDate() != null && promo.getEndDate() != null)
+                    .filter(promo -> !today.isBefore(promo.getStartDate()) && !today.isAfter(promo.getEndDate()))
+                    .findFirst() // Aplicamos solo la primera promoción activa
+                    .ifPresent(promo -> {
+                        double discountedAmount = payment.getAmount() * (1 - promo.getDiscountPercentage() / 100.0);
+                        payment.setAmount(discountedAmount);
+                    });
+        }
+
+        payment.setPaymentDate(LocalDateTime.now());
         paymentRepository.save(payment);
+
         return mapper.toDto(payment);
     }
+
 
     //Read all
     public List<PaymentDTO> getAll(){
