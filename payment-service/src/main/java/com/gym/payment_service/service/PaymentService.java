@@ -96,42 +96,56 @@ public class PaymentService {
     }
 
     //Get valid members:
-        public List<ValidMember> findValidMembers() {
-            // Traer todos los pagos
-            List<PaymentDTO> payments = paymentRepository.findAll()
-                    .stream()
-                    .map(mapper::toDto)
-                    .toList();
+    public List<ValidMember> findValidMembers() {
+        // Traer todos los pagos
+        List<PaymentDTO> payments = paymentRepository.findAll()
+                .stream()
+                .map(mapper::toDto)
+                .toList();
 
-            // Fecha actual
-            LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now();
 
-            // Filtrar y construir lista de miembros válidos
-            return payments.stream()
-                    .filter(p -> p.getValidUntil() != null && !p.getValidUntil().isBefore(today)) // pago vigente
-                    .map(payment -> {
-                        // Consultar microservicio de miembros
+        return payments.stream()
+                .filter(p -> p.getValidUntil() != null && !p.getValidUntil().isBefore(today)) // pago vigente
+                .map(payment -> {
+                    MemberDTO memberDTO = null;
+
+                    try {
+                        // Llamar al microservicio de miembros
                         ResponseEntity<MemberDTO> response = memberClient.getById(payment.getMember());
-                        MemberDTO member = response.getBody();
+                        memberDTO = response.getBody();
 
-                        // Validar que el miembro exista y esté activo
-                        if (member != null && Boolean.TRUE.equals(member.getActive())) {
-                            return ValidMember.builder()
-                                    .idPayment(payment.getIdPayment())
-                                    .amount(payment.getAmount())
-                                    .paymentDate(payment.getPaymentDate())
-                                    .validUntil(payment.getValidUntil())
-                                    .idMember(member.getIdMember())
-                                    .name(member.getName())
-                                    .lastName(member.getLastName())
-                                    .membershipStartDate(member.getMembershipStartDate())
-                                    .membershipType(member.getMembershipType())
-                                    .build();
-                        }
-                        return null;
-                    })
-                    .filter(Objects::nonNull)
-                    .toList();
-        }
+                    } catch (FeignException.NotFound e) {
+                        // Si el miembro no existe
+                        throw new MemberNotFound("Member not found with ID: " + payment.getMember());
+                    } catch (FeignException.ServiceUnavailable e) {
+                        // Si el servicio está caído o no disponible
+                        throw new RuntimeException("Member-service is unavailable. Please try again later.");
+                    } catch (FeignException e) {
+                        // Otros errores de comunicación HTTP
+                        throw new RuntimeException("Error calling member-service: " + e.contentUTF8());
+                    }
+
+                    // Validar que el miembro exista y esté activo
+                    if (memberDTO != null && Boolean.TRUE.equals(memberDTO.getActive())) {
+                        return ValidMember.builder()
+                                .idPayment(payment.getIdPayment())
+                                .amount(payment.getAmount())
+                                .paymentDate(payment.getPaymentDate())
+                                .validUntil(payment.getValidUntil())
+                                .idMember(memberDTO.getIdMember())
+                                .name(memberDTO.getName())
+                                .lastName(memberDTO.getLastName())
+                                .membershipStartDate(memberDTO.getMembershipStartDate())
+                                .membershipType(memberDTO.getMembershipType())
+                                .build();
+                    }
+
+                    return null; // miembro inactivo o nulo
+                })
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
 }
 

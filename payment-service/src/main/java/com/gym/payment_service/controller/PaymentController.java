@@ -1,9 +1,6 @@
 package com.gym.payment_service.controller;
 
-import com.gym.payment_service.dtos.PaymentDTO;
-import com.gym.payment_service.dtos.PaymentRequest;
-import com.gym.payment_service.dtos.PaymentUpdateRequest;
-import com.gym.payment_service.dtos.PaymentWithMember;
+import com.gym.payment_service.dtos.*;
 import com.gym.payment_service.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,4 +53,10 @@ public class PaymentController {
     public ResponseEntity<PaymentWithMember> getWihMember(@PathVariable String idPayment){
         return ResponseEntity.ok(paymentService.findPaymentWithMember(idPayment));
     }
+
+    @GetMapping("/validMember")
+    public ResponseEntity<List<ValidMember>> getValidMember(){
+        return ResponseEntity.ok(paymentService.findValidMembers());
+    }
+
 }
