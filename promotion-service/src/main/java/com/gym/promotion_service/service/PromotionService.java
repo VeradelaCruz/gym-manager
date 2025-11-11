@@ -10,6 +10,7 @@ import com.gym.promotion_service.repository.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -59,6 +60,18 @@ public class PromotionService {
         Promotion updated= promotionRepository.save(found);
         return  mapper.toDto(updated);
     }
+
+    /// ---OTHER OPERATION ---
+
+    //Get active promotion:
+    public List<PromotionDTO> getActivePromotions() {
+        LocalDate today = LocalDate.now();
+        return promotionRepository.findAll().stream()
+                .filter(p -> p.getStartDate().isBefore(today) && p.getEndDate().isAfter(today))
+                .map(mapper::toDto)
+                .toList();
+    }
+
 
 
 }

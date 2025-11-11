@@ -50,4 +50,9 @@ public class PromotionController {
         PromotionDTO promotion= promotionService.changePromotion(dto, idPayment);
         return ResponseEntity.ok(promotion);
     }
+
+    @GetMapping("/getValidPromotions")
+    public ResponseEntity<List<PromotionDTO>> getValidPromotion(){
+        return ResponseEntity.ok(promotionService.getActivePromotions());
+    }
 }
