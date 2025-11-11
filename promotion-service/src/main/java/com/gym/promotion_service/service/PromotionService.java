@@ -56,7 +56,7 @@ public class PromotionService {
         Promotion found= promotionRepository.findById(idPayment)
                 .orElseThrow(()-> new PromotionNotFound(idPayment));
 
-        mapper.UpdateFromDto(request, found);
+        mapper.updateFromRequest(request, found);
         Promotion updated= promotionRepository.save(found);
         return  mapper.toDto(updated);
     }
