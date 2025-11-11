@@ -82,5 +82,8 @@ public class PaymentService {
                 .build();
     }
 
+    //Get valid members:
     
+
+
 }
