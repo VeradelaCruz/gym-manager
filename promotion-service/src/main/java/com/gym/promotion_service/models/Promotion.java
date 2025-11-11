@@ -1,9 +1,7 @@
 package com.gym.promotion_service.models;
 
 import jakarta.validation.constraints.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,6 +10,8 @@ import java.time.LocalDate;
 @Data
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "promotion")
 public class Promotion {
 

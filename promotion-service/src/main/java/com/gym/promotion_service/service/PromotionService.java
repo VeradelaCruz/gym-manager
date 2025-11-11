@@ -59,4 +59,6 @@ public class PromotionService {
         Promotion updated= promotionRepository.save(found);
         return  mapper.toDto(updated);
     }
+
+
 }
