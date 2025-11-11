@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class PaymentWithMember {
     private String idPayment;
 
-    private String member;
     private Double amount;
     private LocalDateTime paymentDate;
     private LocalDate validUntil;
