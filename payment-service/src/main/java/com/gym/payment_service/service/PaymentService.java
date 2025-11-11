@@ -1,11 +1,13 @@
 package com.gym.payment_service.service;
 
 import com.gym.payment_service.dtos.*;
+import com.gym.payment_service.exeption.MemberNotFound;
 import com.gym.payment_service.exeption.PaymentNotFound;
 import com.gym.payment_service.feign.MemberClient;
 import com.gym.payment_service.mapper.PaymentMapper;
 import com.gym.payment_service.models.Payment;
 import com.gym.payment_service.repository.PaymentRepository;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +72,14 @@ public class PaymentService {
         PaymentDTO payment = getById(idPayment);
 
         //Traer el miembro del otro microservicio:
-        MemberDTO member = memberClient.getById(payment.getMember()).getBody();
+        MemberDTO memberDTO;
+        try {
+            MemberDTO member = memberClient.getById(payment.getMember()).getBody();
+        }catch (FeignException.NotFound e) {
+            throw new MemberNotFound( payment.getMember());
+        } catch (FeignException e) {
+            throw new RuntimeException("Error calling member-service: " + e.getMessage());
+        }
 
         //Construir el dto:
         return PaymentWithMember.builder()
@@ -83,7 +92,7 @@ public class PaymentService {
     }
 
     //Get valid members:
-    
+
 
 
 }
