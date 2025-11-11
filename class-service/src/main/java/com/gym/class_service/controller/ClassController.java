@@ -1,9 +1,6 @@
 package com.gym.class_service.controller;
 
-import com.gym.class_service.dtos.ClassWithTrainer;
-import com.gym.class_service.dtos.FitnessClassCreateRequest;
-import com.gym.class_service.dtos.FitnessClassResponse;
-import com.gym.class_service.dtos.FitnessClassUpdateRequest;
+import com.gym.class_service.dtos.*;
 import com.gym.class_service.exceptions.ClassWithTrainerNotFound;
 import com.gym.class_service.models.FitnessClass;
 import com.gym.class_service.service.ClassService;
@@ -13,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -58,6 +56,11 @@ public class ClassController {
     @GetMapping("/{idClass}/with-trainer")
     public ResponseEntity<ClassWithTrainer> getClassWithTrainer(@PathVariable String idClass) {
         return ResponseEntity.ok(classService.findClassWithTrainer(idClass));
+    }
+
+    @GetMapping("/{time}/with-schedule")
+    public ResponseEntity<List<ClassWithSchedule>> getClassWitSchedule(@PathVariable LocalTime time){
+        return ResponseEntity.ok(classService.findClassWithSchedule(time));
     }
 
 

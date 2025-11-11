@@ -3,7 +3,9 @@ package com.gym.payment_service.service;
 import com.gym.payment_service.dtos.PaymentDTO;
 import com.gym.payment_service.dtos.PaymentRequest;
 import com.gym.payment_service.dtos.PaymentUpdateRequest;
+import com.gym.payment_service.dtos.PaymentWithMember;
 import com.gym.payment_service.exeption.PaymentNotFound;
+import com.gym.payment_service.feign.MemberClient;
 import com.gym.payment_service.mapper.PaymentMapper;
 import com.gym.payment_service.models.Payment;
 import com.gym.payment_service.repository.PaymentRepository;
@@ -19,6 +21,9 @@ public class PaymentService {
 
     @Autowired
     private PaymentMapper mapper;
+
+    @Autowired
+    private MemberClient memberClient;
 
     /// ----CRUD OPERATIONS---
     //Create
@@ -58,6 +63,17 @@ public class PaymentService {
         mapper.updateFromDto(request, found);
         Payment updated= paymentRepository.save(found);
         return  mapper.toDto(updated);
+
+    }
+
+    /// ---- OTHER OPERATIONS----
+    //Get payment with member:
+    public PaymentWithMember findPaymentWithMember(String  idPayment){
+        //Encontrar el pago:
+        PaymentDTO payment= getById(idPayment);
+
+        //Traer el miembro del otro microservicio:
+        
 
     }
 }

@@ -12,6 +12,8 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -104,6 +106,13 @@ public class ClassService {
                 .build();
     }
 
+    //Get clases by schedule:
+    public List<ClassWithSchedule> findClassWithSchedule(LocalTime time){
+        return classRepository.findAll().stream()
+                .filter(c -> c.getScheduleDateTime().toLocalTime().equals(time))
+                .map(mapper::toDto) // Usando el mapper
+                .toList();
+    }
 
 
 

@@ -1,5 +1,6 @@
 package com.gym.class_service.mapper;
 
+import com.gym.class_service.dtos.ClassWithSchedule;
 import com.gym.class_service.dtos.FitnessClassCreateRequest;
 import com.gym.class_service.dtos.FitnessClassResponse;
 import com.gym.class_service.dtos.FitnessClassUpdateRequest;
@@ -17,6 +18,8 @@ public interface FitnessClassMapper {
 
     // Para devolver al cliente la respuesta
     FitnessClassResponse toResponse(FitnessClass entity);
+
+    ClassWithSchedule toDto(FitnessClass fitnessClass);
 
     // Para actualizar una entidad existente con los datos del DTO
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
