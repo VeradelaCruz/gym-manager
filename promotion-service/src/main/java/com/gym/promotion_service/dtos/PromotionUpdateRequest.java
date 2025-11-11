@@ -14,23 +14,17 @@ import java.time.LocalDate;
 public class PromotionUpdateRequest {
     private String idPromotion;
 
-    @NotBlank(message = "Promotion name cannot be empty")
     private String name;
-
-    @NotNull(message = "Discount percentage cannot be null")
     @Min(value = 0, message = "Discount cannot be less than 0%")
     @Max(value = 100, message = "Discount cannot exceed 100%")
     private Long discountPercentage;
 
-    @NotNull(message = "Start date cannot be null")
     @FutureOrPresent(message = "Start date must be today or in the future")
     private LocalDate startDate;
 
-    @NotNull(message = "End date cannot be null")
     @Future(message = "End date must be in the future")
     private LocalDate endDate;
-
-    @NotNull(message = "Field appliesToMembershipType cannot be null")
+    
     private Boolean appliesToMembershipType;
 
     @AssertTrue(message = "End date must be after start date")

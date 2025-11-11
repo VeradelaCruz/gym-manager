@@ -32,22 +32,22 @@ public class PromotionController {
         );
     }
 
-    @GetMapping("/id/{idPayment}")
-    public ResponseEntity<PromotionDTO> getById(@PathVariable String idPayment){
-        return ResponseEntity.ok(promotionService.getById(idPayment));
+    @GetMapping("/id/{idPromotion}")
+    public ResponseEntity<PromotionDTO> getById(@PathVariable String idPromotion){
+        return ResponseEntity.ok(promotionService.getById(idPromotion));
     }
 
-    @DeleteMapping("/delete/{idPayment}")
+    @DeleteMapping("/delete/{idPromotion}")
     public ResponseEntity<Void> deletePayment(@PathVariable String idPayment){
         promotionService.deleteById(idPayment);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{idPayment}")
+    @PutMapping("/update/{idPromotion}")
     public ResponseEntity<PromotionDTO> updatePayment(
-            @PathVariable String idPayment,
+            @PathVariable String idPromotion,
             @Valid @RequestBody PromotionUpdateRequest dto){
-        PromotionDTO promotion= promotionService.changePromotion(dto, idPayment);
+        PromotionDTO promotion= promotionService.changePromotion(dto, idPromotion);
         return ResponseEntity.ok(promotion);
     }
 
