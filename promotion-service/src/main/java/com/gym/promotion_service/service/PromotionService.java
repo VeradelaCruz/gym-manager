@@ -2,6 +2,10 @@ package com.gym.promotion_service.service;
 
 import com.gym.promotion_service.dtos.PromotionDTO;
 import com.gym.promotion_service.dtos.PromotionRequest;
+import com.gym.promotion_service.dtos.PromotionUpdateRequest;
+import com.gym.promotion_service.exception.PromotionNotFound;
+import com.gym.promotion_service.mapper.PromotionMapper;
+import com.gym.promotion_service.models.Promotion;
 import com.gym.promotion_service.repository.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,44 +17,46 @@ public class PromotionService {
     @Autowired
     private PromotionRepository promotionRepository;
 
+    @Autowired
+    private PromotionMapper mapper;
+
     ///  ---- CRUD OPERATION ----
     //Create
-    public PromotionDTO createPayment(PromotionRequest paymentRequest){
-        Payment payment= mapper.toEntity(paymentRequest);
-        paymentRepository.save(payment);
-        return mapper.toDto(payment);
+    public PromotionDTO createPayment(PromotionRequest promotionRequest){
+        Promotion promotion= mapper.toEntity(promotionRequest);
+        promotionRepository.save(promotion);
+        return mapper.toDto(promotion);
     }
 
     //Read all
-    public List<PaymentDTO> getAll(){
-        return paymentRepository.findAll()
+    public List<PromotionDTO> getAll(){
+        return promotionRepository.findAll()
                 .stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
     //Read by id
-    public PaymentDTO getById(String idPayment){
-        Payment found= paymentRepository.findById(idPayment)
-                .orElseThrow(()-> new PaymentNotFound(idPayment));
+    public PromotionDTO getById(String idPromotion){
+        Promotion found= promotionRepository.findById(idPromotion)
+                .orElseThrow(()-> new PromotionNotFound(idPromotion));
         return mapper.toDto(found);
     }
 
     //Delete
-    public void deleteById(String idPayment){
-        Payment existing= paymentRepository.findById(idPayment)
-                .orElseThrow(()-> new PaymentNotFound(idPayment));
-        paymentRepository.deleteById(existing.getIdPayment());
+    public void deleteById(String idPromotion){
+        Promotion existing= promotionRepository.findById(idPromotion)
+                .orElseThrow(()-> new PromotionNotFound(idPromotion));
+        promotionRepository.deleteById(existing.getIdPromotion());
     }
 
     //Update
-    public PaymentDTO changePayment(PaymentUpdateRequest request, String idPayment){
-        Payment found= paymentRepository.findById(idPayment)
-                .orElseThrow(()-> new PaymentNotFound(idPayment));
+    public PromotionDTO changePromotion(PromotionUpdateRequest request, String idPayment){
+        Promotion found= promotionRepository.findById(idPayment)
+                .orElseThrow(()-> new PromotionNotFound(idPayment));
 
-        mapper.updateFromDto(request, found);
-        Payment updated= paymentRepository.save(found);
+        mapper.UpdateFromDto(request, found);
+        Promotion updated= promotionRepository.save(found);
         return  mapper.toDto(updated);
-
     }
 }
