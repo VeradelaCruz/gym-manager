@@ -5,6 +5,7 @@ import com.gym.member_service.dtos.MemberRequest;
 import com.gym.member_service.dtos.MemberUpdateDTO;
 import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.exception.MemberNotFound;
+import com.gym.member_service.exception.MembershipNotFound;
 import com.gym.member_service.mapper.MemberMapper;
 import com.gym.member_service.models.Member;
 import com.gym.member_service.repository.MemberRepository;
@@ -68,6 +69,7 @@ public class MemberService {
     //Get by membership
     public MemberDTO findByMembership(MembershipType membershipType){
         Member member= memberRepository.findByMembershipType(membershipType)
-                .orElseThrow()
+                .orElseThrow(()-> new MembershipNotFound(membershipType));
+        return mapper.toDto(member);
     }
 }
