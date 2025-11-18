@@ -1,6 +1,7 @@
 package com.gym.member_service.models;
 
 
+import com.gym.member_service.enums.MembershipType;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,6 +25,6 @@ public class Member {
     private String email;
     private String phone;
     private LocalDate membershipStartDate;
-    private String membershipType;
+    private MembershipType membershipType;
     private Boolean active;
 }
