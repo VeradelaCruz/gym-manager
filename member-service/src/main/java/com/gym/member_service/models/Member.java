@@ -27,4 +27,5 @@ public class Member {
     private LocalDate membershipStartDate;
     private MembershipType membershipType;
     private Boolean active;
+
 }
