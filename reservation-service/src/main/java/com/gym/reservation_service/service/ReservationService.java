@@ -84,5 +84,8 @@ public class ReservationService {
                 .build();
     }
 
-    //Get reservations with
+    //Get reservations with a type of membership
+    public ReservationWithMember findWithMembership(String membershipType){
+
+    }
 }
