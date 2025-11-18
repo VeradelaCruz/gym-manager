@@ -1,6 +1,7 @@
 package com.gym.reservation_service.service;
 
 import com.gym.reservation_service.dtos.*;
+import com.gym.reservation_service.exception.MemberNotFound;
 import com.gym.reservation_service.exception.ReservationNotFound;
 import com.gym.reservation_service.feign.MemberClient;
 import com.gym.reservation_service.mapper.ReservationMapper;
@@ -73,7 +74,7 @@ public class ReservationService {
         try {
             memberDTO = memberClient.getById(reservation.getMember()).getBody();
         } catch (FeignException.NotFound e) {
-            throw new MemberNotFoundException("Member not found with id: " + reservation.getMember());
+            throw new MemberNotFound(reservation.getMember());
         }
         return ReservationWithMember.builder()
                 .idReservation(idReservation)
