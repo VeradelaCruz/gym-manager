@@ -3,6 +3,7 @@ package com.gym.member_service.controller;
 import com.gym.member_service.dtos.MemberDTO;
 import com.gym.member_service.dtos.MemberRequest;
 import com.gym.member_service.dtos.MemberUpdateDTO;
+import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,11 @@ public class MemberController {
             @Valid @RequestBody MemberUpdateDTO update){
         MemberDTO member= memberService.changeMember(update, idMember);
         return ResponseEntity.ok(member);
+    }
+
+    @GetMapping("/membership/{membershipType")
+    public ResponseEntity<MemberDTO> getByMembership(@PathVariable MembershipType membershipType){
+        MemberDTO memberDTO= memberService.findByMembership(membershipType);
+        return ResponseEntity.ok(memberDTO);
     }
 }
