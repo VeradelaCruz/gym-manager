@@ -1,8 +1,10 @@
 package com.gym.reservation_service.controller;
 
+import com.gym.member_service.enums.MembershipType;
 import com.gym.reservation_service.dtos.ReservationDTO;
 import com.gym.reservation_service.dtos.ReservationRequest;
 import com.gym.reservation_service.dtos.ReservationUpdateRequest;
+import com.gym.reservation_service.dtos.ReservationWithMember;
 import com.gym.reservation_service.service.ReservationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +51,10 @@ public class ReservationController {
             @Valid @RequestBody ReservationUpdateRequest dto){
         ReservationDTO member= reservationService.changeReservation(dto, idReservation);
         return ResponseEntity.ok(member);
+    }
+
+    @GetMapping("/with-membership/{membershipType}")
+    public ResponseEntity<List<ReservationWithMember>> getWithMembership(@PathVariable MembershipType membershipType){
+        return ResponseEntity.ok(reservationService.findWithMembership(membershipType));
     }
 }
