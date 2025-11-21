@@ -1,6 +1,7 @@
 package com.gym.reservation_service.service;
 
 import com.gym.member_service.enums.MembershipType;
+import com.gym.member_service.exception.MembershipNotFound;
 import com.gym.reservation_service.dtos.*;
 import com.gym.reservation_service.exception.MemberNotFound;
 import com.gym.reservation_service.exception.ReservationNotFound;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ReservationService {
@@ -87,14 +89,37 @@ public class ReservationService {
 
     //Get reservations with a type of membership
     public List<ReservationWithMember> findWithMembership(MembershipType membershipType){
-        //get member by membership
-        MemberDTO member= memberClient.getByMembership(membershipType).getBody();
+        //get members by membership
+        List<MemberDTO> members= memberClient.getByMembership(membershipType).getBody();
 
-        //Get reservations with membership found
-        List<ReservationWithMember> reservations= findWithMember().findAll().stream()
-                .map(r-> r.ge)
+        if (members == null || members.isEmpty()) {
+            throw new MembershipNotFound(membershipType);
+        }
+
+        //get idMember for from all members:
+        List<String> idMembers= members.stream()
+                .map(MemberDTO::getIdMember)
+                .toList();
+        //Get reservations with idMember:
+        List<ReservationDTO> reservations= getAll().stream()
+                .filter(r -> idMembers.contains(r.getMember()))
+                .toList();
+
         //build dto
-        return new ReservationWithMember().builder()
-                .fitnessClass()
+        return reservations.stream()
+                .map(reservation-> {
+                    MemberDTO memberDTO = members.stream()
+                            .filter(mem -> mem.getIdMember().equals(reservation.getMember()))
+                            .findFirst()
+                            .orElse(null);
+
+        return ReservationWithMember.builder()
+                .idReservation(reservation.getIdReservation())
+                .memberDTO(memberDTO)
+                .reservationDate(reservation.getReservationDate())
+                .fitnessClass(reservation.getFitnessClass()) // si lo tienes en tu modelo
+                .build();
+    })
+            .toList();
     }
 }

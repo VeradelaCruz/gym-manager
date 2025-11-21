@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @FeignClient(name = "member-service")
 public interface MemberClient {
     @GetMapping("/member/id/{idMember}")
     ResponseEntity<MemberDTO> getById(@PathVariable String idMember);
 
     @GetMapping("/member/membership/{membershipType}")
-    ResponseEntity<MemberDTO> getByMembership(@PathVariable MembershipType membershipType);
+    ResponseEntity<List<MemberDTO>> getByMembership(@PathVariable MembershipType membershipType);
 }
