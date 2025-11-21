@@ -52,9 +52,9 @@ public class MemberController {
         return ResponseEntity.ok(member);
     }
 
-    @GetMapping("/membership/{membershipType")
-    public ResponseEntity<MemberDTO> getByMembership(@PathVariable MembershipType membershipType){
-        MemberDTO memberDTO= memberService.findByMembership(membershipType);
-        return ResponseEntity.ok(memberDTO);
+    @GetMapping("/membership/{membershipType}")
+    public ResponseEntity<List<MemberDTO>> getByMembership(@PathVariable MembershipType membershipType){
+        List<MemberDTO> members= memberService.findByMembership(membershipType);
+        return ResponseEntity.ok(members);
     }
 }

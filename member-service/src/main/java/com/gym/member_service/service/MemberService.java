@@ -67,9 +67,10 @@ public class MemberService {
 
     /// --- OTHER OPERATIONS -----
     //Get by membership
-    public MemberDTO findByMembership(MembershipType membershipType){
-        Member member= memberRepository.findByMembershipType(membershipType)
-                .orElseThrow(()-> new MembershipNotFound(membershipType));
-        return mapper.toDto(member);
+    public List<MemberDTO> findByMembership(MembershipType membershipType){
+        List<Member> members= memberRepository.findByMembershipType(membershipType);
+        return members.stream()
+                .map(mapper::toDto)
+                .toList();
     }
 }

@@ -1,5 +1,6 @@
 package com.gym.reservation_service.service;
 
+import com.gym.member_service.enums.MembershipType;
 import com.gym.reservation_service.dtos.*;
 import com.gym.reservation_service.exception.MemberNotFound;
 import com.gym.reservation_service.exception.ReservationNotFound;
@@ -85,7 +86,15 @@ public class ReservationService {
     }
 
     //Get reservations with a type of membership
-    public ReservationWithMember findWithMembership(String membershipType){
+    public List<ReservationWithMember> findWithMembership(MembershipType membershipType){
+        //get member by membership
+        MemberDTO member= memberClient.getByMembership(membershipType).getBody();
 
+        //Get reservations with membership found
+        List<ReservationWithMember> reservations= findWithMember().findAll().stream()
+                .map(r-> r.ge)
+        //build dto
+        return new ReservationWithMember().builder()
+                .fitnessClass()
     }
 }
