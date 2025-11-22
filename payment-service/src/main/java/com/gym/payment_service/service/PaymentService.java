@@ -182,7 +182,7 @@ public class PaymentService {
                 .toList();
 
         if (payments.isEmpty()) {
-            throw new MemberNotValidException("El miembro no tiene pagos registrados");
+            throw new MemberNotFound("This member has no payments registered");
         }
 
         // Traer info del miembro
@@ -212,7 +212,7 @@ public class PaymentService {
                     .build();
         }
 
-        throw new MemberNotValidException("El miembro no tiene la cuota al día");
+        throw new MemberNotFound("El miembro no tiene la cuota al día");
     }
 
 
