@@ -144,5 +144,11 @@ public class ReservationService {
         }
     }
 
+    //Check if a class is available for reservation:
+    public void validateClassAvailability(String idClass){
+        //Call microservice
+
+    }
+
 }
 

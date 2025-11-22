@@ -64,7 +64,7 @@ public class ClassService {
         FitnessClass existing = classRepository.findById(id)
                 .orElseThrow(() -> new ClassNotFound(id));
 
-        mapper.updateFromDTO(request, existing); // 👈 Actualiza solo los campos no nulos
+        mapper.updateFromDTO(request, existing);
 
         FitnessClass updated = classRepository.save(existing);
         return mapper.toResponse(updated);
@@ -110,9 +110,10 @@ public class ClassService {
     public List<ClassWithSchedule> findClassWithSchedule(LocalTime time){
         return classRepository.findAll().stream()
                 .filter(c -> c.getScheduleDateTime().toLocalTime().equals(time))
-                .map(mapper::toDto) // Usando el mapper
+                .map(mapper::toDto)
                 .toList();
     }
+
 
 
 
