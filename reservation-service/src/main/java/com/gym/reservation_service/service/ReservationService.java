@@ -6,6 +6,7 @@ import com.gym.reservation_service.dtos.*;
 import com.gym.reservation_service.exception.MemberNotFound;
 import com.gym.reservation_service.exception.MemberServiceUnavailableException;
 import com.gym.reservation_service.exception.ReservationNotFound;
+import com.gym.reservation_service.feign.ClassClient;
 import com.gym.reservation_service.feign.MemberClient;
 import com.gym.reservation_service.feign.PaymentClient;
 import com.gym.reservation_service.mapper.ReservationMapper;
@@ -30,6 +31,9 @@ public class ReservationService {
 
     @Autowired
     private PaymentClient paymentClient;
+
+    @Autowired
+    private ClassClient classClient;
     /// ----CRUD OPERATIONS---
     //Create
     public ReservationDTO createReservation(ReservationRequest request){
@@ -147,6 +151,11 @@ public class ReservationService {
     //Check if a class is available for reservation:
     public void validateClassAvailability(String idClass){
         //Call microservice
+        FitnessClassResponse fitnessClassResponse;
+        try {
+            FitnessClassResponse classResponse = classClient.getClassById(idClass).getBody();
+        }catch (FeignException.NotFound e)
+            throw  new ClassNotFoundException(idClass);
 
     }
 
