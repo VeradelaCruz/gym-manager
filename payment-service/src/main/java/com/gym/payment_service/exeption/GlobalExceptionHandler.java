@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
-    
+
     @ExceptionHandler(MemberServiceUnavailableException.class)
     public ResponseEntity<Map<String, String>> handleMemberServiceUnavailable(MemberServiceUnavailableException ex) {
         Map<String, String> response = new HashMap<>();

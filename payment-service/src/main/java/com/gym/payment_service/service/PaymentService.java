@@ -3,6 +3,7 @@ package com.gym.payment_service.service;
 import com.gym.payment_service.dtos.*;
 import com.gym.payment_service.exeption.MemberNotFound;
 import com.gym.payment_service.exeption.MemberNotValidException;
+import com.gym.payment_service.exeption.MemberServiceUnavailableException;
 import com.gym.payment_service.exeption.PaymentNotFound;
 import com.gym.payment_service.feign.MemberClient;
 import com.gym.payment_service.feign.PromotionClient;

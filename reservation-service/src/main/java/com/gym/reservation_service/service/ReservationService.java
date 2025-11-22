@@ -33,6 +33,7 @@ public class ReservationService {
     private PaymentClient paymentClient;
     /// ----CRUD OPERATIONS---
     //Create
+    //Use other operation for validation
     public ReservationDTO createReservation(ReservationRequest request){
         Reservation reservation= mapper.toEntity(request);
         reservationRepository.save(reservation);
@@ -127,14 +128,11 @@ public class ReservationService {
             .toList();
     }
 
-    //Check if member's payments is up to date for a reservation:
-    public ReservationWithPayment findWithPayment(String idPayment){
-        //Get valid members from PaymentClient
-
-        //Get reservation with idMember:
-
-
-
+    //Get a valid member from other microservice:
+    public ValidMember findValidMember(String idMember){
+        //Call microservice communication
+        ValidMember member= paymentClient.getValidMember(idMember).getBody();
     }
 
 }
+

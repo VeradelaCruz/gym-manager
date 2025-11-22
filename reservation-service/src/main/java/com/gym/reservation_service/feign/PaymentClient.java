@@ -10,8 +10,6 @@ import java.util.List;
 
 @FeignClient(name = "payment-service")
 public interface PaymentClient {
-    @GetMapping("/payment/id/{idPayment}")
-    ResponseEntity<ValidMember> getById(@PathVariable String idPayment);
-
-    @GetMapping("/payment/validMember")
-    ResponseEntity<List<ValidMember>> getValidMember();
+    @GetMapping("/payment/validMember/{idMember}")
+    ResponseEntity<ValidMember> getValidMember(@PathVariable String idMember);
+}
