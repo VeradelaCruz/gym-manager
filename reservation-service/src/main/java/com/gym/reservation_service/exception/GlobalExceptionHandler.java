@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ReservationNotFound.class)
     public ResponseEntity<Map<String,String>> ReservationNotFoundHandler(ReservationNotFound ex){
         Map<String, String> response = new HashMap<>();
-        response.put("error", "Resource not found");
+        response.put("error", "Reservation not found");
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MemberNotFound.class)
     public ResponseEntity<Map<String, String>> MemberNotFound(MemberNotFound ex) {
         Map<String, String> response = new HashMap<>();
-        response.put("error", "Resource not found");
+        response.put("error", "Member not found");
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PaymentNotFound.class)
     public ResponseEntity<Map<String,String>> PaymentNotFoundHandler(PaymentNotFound ex){
         Map<String, String> response = new HashMap<>();
-        response.put("error", "Resource not found");
+        response.put("error", "Payment not found");
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
@@ -62,6 +62,16 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
     }
+
+    @ExceptionHandler(ClassFullException.class)
+    public ResponseEntity<Map<String, String>> handleClassFullException(ClassFullException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Class full");
+        response.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
 
 
 }

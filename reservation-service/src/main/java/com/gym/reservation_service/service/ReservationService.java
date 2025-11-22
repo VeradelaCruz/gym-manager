@@ -3,9 +3,7 @@ package com.gym.reservation_service.service;
 import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.exception.MembershipNotFound;
 import com.gym.reservation_service.dtos.*;
-import com.gym.reservation_service.exception.MemberNotFound;
-import com.gym.reservation_service.exception.MemberServiceUnavailableException;
-import com.gym.reservation_service.exception.ReservationNotFound;
+import com.gym.reservation_service.exception.*;
 import com.gym.reservation_service.feign.ClassClient;
 import com.gym.reservation_service.feign.MemberClient;
 import com.gym.reservation_service.feign.PaymentClient;
@@ -149,15 +147,32 @@ public class ReservationService {
     }
 
     //Check if a class is available for reservation:
-    public void validateClassAvailability(String idClass){
-        //Call microservice
-        FitnessClassResponse fitnessClassResponse;
+    public void validateClassAvailability(String idClass) {
         try {
+            // Call class-microservice
             FitnessClassResponse classResponse = classClient.getClassById(idClass).getBody();
-        }catch (FeignException.NotFound e)
-            throw  new ClassNotFoundException(idClass);
 
+            if (classResponse == null) {
+                throw new ClassNotFound(idClass);
+            }
+
+            // Count available spots in class-service
+            long currentReservations = reservationRepository.countByFitnessClass(idClass);
+
+            // 3. Comparar con el máximo de participantes
+            if (currentReservations >= classResponse.getMaxParticipants()) {
+                throw new ClassFullException("No spots available for this class");
+            }
+
+        } catch (FeignException.NotFound e) {
+            throw new ClassNotFound(idClass);
+        } catch (FeignException.ServiceUnavailable e) {
+            throw new ClassServiceUnavailableException("Class service is unavailable. Please try again later");
+        } catch (FeignException e) {
+            throw new RuntimeException("Error communicating with the class service: " + e.contentUTF8());
+        }
     }
+
 
 }
 
