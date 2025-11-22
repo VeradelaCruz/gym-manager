@@ -122,4 +122,8 @@ public class ReservationService {
     })
             .toList();
     }
+
+    //Check if member's payments is up to date
+    public Reservation
+
 }
