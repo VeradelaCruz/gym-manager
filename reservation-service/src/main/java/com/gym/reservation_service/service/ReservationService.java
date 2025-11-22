@@ -37,6 +37,8 @@ public class ReservationService {
     public ReservationDTO createReservation(ReservationRequest request){
         //Use other operation for validation
         validateMemberForReservation(request.getMember());
+        //Validation for class disponibility
+        validateClassAvailability(request.getFitnessClass());
         Reservation reservation= mapper.toEntity(request);
         reservationRepository.save(reservation);
         return mapper.toDto(reservation);
