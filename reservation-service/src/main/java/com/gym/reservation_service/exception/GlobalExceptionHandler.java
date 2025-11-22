@@ -11,7 +11,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ReservationNotFound.class)
-    public ResponseEntity<Map<String,String>> PaymentNotFoundHandler(ReservationNotFound ex){
+    public ResponseEntity<Map<String,String>> ReservationNotFoundHandler(ReservationNotFound ex){
         Map<String, String> response = new HashMap<>();
         response.put("error", "Resource not found");
         response.put("message", ex.getMessage());
@@ -25,4 +25,15 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
+    @ExceptionHandler(PaymentNotFound.class)
+    public ResponseEntity<Map<String,String>> PaymentNotFoundHandler(PaymentNotFound ex){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Resource not found");
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+
+
 }

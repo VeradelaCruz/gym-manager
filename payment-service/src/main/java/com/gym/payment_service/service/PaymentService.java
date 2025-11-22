@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -169,6 +170,49 @@ public class PaymentService {
                 })
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    //Get a valid member:
+    public ValidMember findValidMember(String idMember) {
+
+        // Traer solo pagos del miembro (mucho más eficiente)
+        List<PaymentDTO> payments = paymentRepository.findByMember(idMember)
+                .stream()
+                .map(mapper::toDto)
+                .toList();
+
+        if (payments.isEmpty()) {
+            throw new MemberNotValidException("El miembro no tiene pagos registrados");
+        }
+
+        // Traer info del miembro
+        MemberDTO memberDTO = memberClient.getById(idMember).getBody();
+
+        // Obtener el último pago
+        PaymentDTO lastPayment = payments.stream()
+                .max(Comparator.comparing(PaymentDTO::getPaymentDate))
+                .orElseThrow();
+
+        // Validar el pago
+        LocalDate today = LocalDate.now();
+
+        if (lastPayment.getValidUntil() != null &&
+                !lastPayment.getValidUntil().isBefore(today)) {
+
+            return ValidMember.builder()
+                    .idMember(idMember)
+                    .name(memberDTO.getName())
+                    .lastName(memberDTO.getLastName())
+                    .membershipStartDate(memberDTO.getMembershipStartDate())
+                    .membershipType(memberDTO.getMembershipType())
+                    .idPayment(lastPayment.getIdPayment())
+                    .amount(lastPayment.getAmount())
+                    .paymentDate(lastPayment.getPaymentDate())
+                    .validUntil(lastPayment.getValidUntil())
+                    .build();
+        }
+
+        throw new MemberNotValidException("El miembro no tiene la cuota al día");
     }
 
 

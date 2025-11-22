@@ -30,6 +30,6 @@ public class ReservationWithPayment {
     @NotNull(message = "Status cannot be null")
     private Status status;
 
-    private PaymentDTO paymentDTO;
+    private ValidMember validMember;
 
 }

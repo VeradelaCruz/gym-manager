@@ -4,6 +4,7 @@ import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.exception.MembershipNotFound;
 import com.gym.reservation_service.dtos.*;
 import com.gym.reservation_service.exception.MemberNotFound;
+import com.gym.reservation_service.exception.PaymentNotFound;
 import com.gym.reservation_service.exception.ReservationNotFound;
 import com.gym.reservation_service.feign.MemberClient;
 import com.gym.reservation_service.feign.PaymentClient;
@@ -126,10 +127,14 @@ public class ReservationService {
             .toList();
     }
 
-    //Check if member's payments is up to date
-    public ReservationWithPayment findWithPayment(String idReservation){
-        //Get payment from payment-service
-        PaymentDTO paymentDTO=
+    //Check if member's payments is up to date for a reservation:
+    public ReservationWithPayment findWithPayment(String idPayment){
+        //Get valid members from PaymentClient
+
+        //Get reservation with idMember:
+
+
+
     }
 
 }
