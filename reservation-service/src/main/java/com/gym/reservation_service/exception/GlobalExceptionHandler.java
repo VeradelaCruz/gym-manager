@@ -26,6 +26,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+
+    @ExceptionHandler(MemberServiceUnavailableException.class)
+    public ResponseEntity<Map<String, String>> handleMemberServiceUnavailable(MemberServiceUnavailableException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Service unavailable");
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+    }
+
     @ExceptionHandler(PaymentNotFound.class)
     public ResponseEntity<Map<String,String>> PaymentNotFoundHandler(PaymentNotFound ex){
         Map<String, String> response = new HashMap<>();

@@ -4,7 +4,7 @@ import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.exception.MembershipNotFound;
 import com.gym.reservation_service.dtos.*;
 import com.gym.reservation_service.exception.MemberNotFound;
-import com.gym.reservation_service.exception.PaymentNotFound;
+import com.gym.reservation_service.exception.MemberServiceUnavailableException;
 import com.gym.reservation_service.exception.ReservationNotFound;
 import com.gym.reservation_service.feign.MemberClient;
 import com.gym.reservation_service.feign.PaymentClient;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class ReservationService {
@@ -33,8 +32,9 @@ public class ReservationService {
     private PaymentClient paymentClient;
     /// ----CRUD OPERATIONS---
     //Create
-    //Use other operation for validation
     public ReservationDTO createReservation(ReservationRequest request){
+        //Use other operation for validation
+        validateMemberForReservation(request.getMember());
         Reservation reservation= mapper.toEntity(request);
         reservationRepository.save(reservation);
         return mapper.toDto(reservation);
@@ -129,9 +129,19 @@ public class ReservationService {
     }
 
     //Get a valid member from other microservice:
-    public ValidMember findValidMember(String idMember){
+    public void validateMemberForReservation(String idMember) {
         //Call microservice communication
-        ValidMember member= paymentClient.getValidMember(idMember).getBody();
+        ValidMember validMember;
+        //Exception handler
+        try {
+            paymentClient.getValidMember(idMember).getBody();
+        } catch (FeignException.NotFound e) {
+            throw new MemberNotFound(idMember);
+        } catch (FeignException.ServiceUnavailable e) {
+            throw new MemberServiceUnavailableException("Member service is unavailable. Please try again later");
+        } catch (FeignException e) {
+            throw new RuntimeException("Error communicating with the member service: " + e.contentUTF8());
+        }
     }
 
 }

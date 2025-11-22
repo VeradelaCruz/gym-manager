@@ -198,7 +198,7 @@ public class PaymentService {
             }
 
         } catch (FeignException.NotFound e) {
-            throw new MemberNotFound("The member does not exist");
+            throw new MemberNotFound(idMember);
         } catch (FeignException.ServiceUnavailable e) {
             throw new MemberServiceUnavailableException("Member service is unavailable. Please try again later");
         } catch (FeignException e) {
