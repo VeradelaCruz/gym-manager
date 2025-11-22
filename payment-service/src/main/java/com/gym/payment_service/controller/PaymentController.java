@@ -54,9 +54,14 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.findPaymentWithMember(idPayment));
     }
 
-    @GetMapping("/validMember")
-    public ResponseEntity<List<ValidMember>> getValidMember(){
+    @GetMapping("/validMembers")
+    public ResponseEntity<List<ValidMember>> getValidMembers(){
         return ResponseEntity.ok(paymentService.findValidMembers());
+    }
+
+    @GetMapping("/validMember/{idMember}")
+    public ResponseEntity<ValidMember> getValidMember(@PathVariable String idMember){
+        return ResponseEntity.ok(paymentService.findValidMember(idMember));
     }
 
 

@@ -2,6 +2,7 @@ package com.gym.payment_service.service;
 
 import com.gym.payment_service.dtos.*;
 import com.gym.payment_service.exeption.MemberNotFound;
+import com.gym.payment_service.exeption.MemberNotValidException;
 import com.gym.payment_service.exeption.PaymentNotFound;
 import com.gym.payment_service.feign.MemberClient;
 import com.gym.payment_service.feign.PromotionClient;
@@ -175,30 +176,45 @@ public class PaymentService {
     //Get a valid member:
     public ValidMember findValidMember(String idMember) {
 
-        // Traer solo pagos del miembro (mucho más eficiente)
+        // 1. Retrieve payments of the member from MongoDB
         List<PaymentDTO> payments = paymentRepository.findByMember(idMember)
                 .stream()
                 .map(mapper::toDto)
                 .toList();
 
         if (payments.isEmpty()) {
-            throw new MemberNotFound("This member has no payments registered");
+            throw new MemberNotValidException("The member has no registered payments");
         }
 
-        // Traer info del miembro
-        MemberDTO memberDTO = memberClient.getById(idMember).getBody();
+        // 2. Retrieve member information via Feign
+        MemberDTO memberDTO;
+        try {
+            ResponseEntity<MemberDTO> response = memberClient.getById(idMember);
+            memberDTO = response.getBody();
 
-        // Obtener el último pago
+            if (memberDTO == null) {
+                throw new MemberNotFound("The member does not exist");
+            }
+
+        } catch (FeignException.NotFound e) {
+            throw new MemberNotFound("The member does not exist");
+        } catch (FeignException.ServiceUnavailable e) {
+            throw new MemberServiceUnavailableException("Member service is unavailable. Please try again later");
+        } catch (FeignException e) {
+            throw new RuntimeException("Error communicating with the member service: " + e.contentUTF8());
+        }
+
+        // 3. Get the last payment
         PaymentDTO lastPayment = payments.stream()
                 .max(Comparator.comparing(PaymentDTO::getPaymentDate))
                 .orElseThrow();
 
-        // Validar el pago
+        // 4. Check if the payment is still valid
         LocalDate today = LocalDate.now();
-
         if (lastPayment.getValidUntil() != null &&
                 !lastPayment.getValidUntil().isBefore(today)) {
 
+            // 5. Build and return ValidMember DTO
             return ValidMember.builder()
                     .idMember(idMember)
                     .name(memberDTO.getName())
@@ -212,8 +228,9 @@ public class PaymentService {
                     .build();
         }
 
-        throw new MemberNotFound("El miembro no tiene la cuota al día");
+        throw new MemberNotValidException("The member's payment is not up to date");
     }
+
 
 
 
