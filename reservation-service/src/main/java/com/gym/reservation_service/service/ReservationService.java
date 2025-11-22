@@ -6,6 +6,7 @@ import com.gym.reservation_service.dtos.*;
 import com.gym.reservation_service.exception.MemberNotFound;
 import com.gym.reservation_service.exception.ReservationNotFound;
 import com.gym.reservation_service.feign.MemberClient;
+import com.gym.reservation_service.feign.PaymentClient;
 import com.gym.reservation_service.mapper.ReservationMapper;
 import com.gym.reservation_service.models.Reservation;
 import com.gym.reservation_service.repository.ReservationRepository;
@@ -27,6 +28,8 @@ public class ReservationService {
     @Autowired
     private MemberClient memberClient;
 
+    @Autowired
+    private PaymentClient paymentClient;
     /// ----CRUD OPERATIONS---
     //Create
     public ReservationDTO createReservation(ReservationRequest request){
@@ -124,6 +127,9 @@ public class ReservationService {
     }
 
     //Check if member's payments is up to date
-    public Reservation
+    public ReservationWithPayment findWithPayment(String idReservation){
+        //Get payment from payment-service
+        PaymentDTO paymentDTO=
+    }
 
 }
