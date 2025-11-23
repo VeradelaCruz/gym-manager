@@ -73,4 +73,7 @@ public class MemberService {
                 .map(mapper::toDto)
                 .toList();
     }
+
+    //Get historial of payments for a member
+    public
 }

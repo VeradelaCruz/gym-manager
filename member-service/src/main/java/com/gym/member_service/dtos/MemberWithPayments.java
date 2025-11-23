@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberDTO {
+public class MemberWithPayments {
     private String idMember;
     @NotBlank(message = "Name cannot be empty")
     private String name;
@@ -34,4 +34,6 @@ public class MemberDTO {
     private String membershipType;
     @NotNull(message = "Active status cannot be null")
     private Boolean active;
+
+    private PaymentDTO paymentDTO;
 }
