@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Getter
@@ -35,5 +36,5 @@ public class MemberWithPayments {
     @NotNull(message = "Active status cannot be null")
     private Boolean active;
 
-    private PaymentDTO paymentDTO;
+    private List<PaymentDTO> payments;
 }

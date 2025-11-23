@@ -12,6 +12,7 @@ import com.gym.payment_service.models.Payment;
 import com.gym.payment_service.repository.PaymentRepository;
 import feign.FeignException;
 import jakarta.validation.Valid;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -233,6 +234,15 @@ public class PaymentService {
     }
 
 
+    //Find payments by member id
+    public List<PaymentDTO> findByMember(String member){
+        List<Payment> payments = paymentRepository.findByMember(member);
+        if (payments.isEmpty()) {
+            return List.of();
+        }        return payments.stream()
+                .map(mapper::toDto)
+                .toList();
+    }
 
 
 }

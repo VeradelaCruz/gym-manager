@@ -64,6 +64,11 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.findValidMember(idMember));
     }
 
+    @GetMapping("/byMemberId/{member}")
+    private ResponseEntity<List<PaymentDTO>> getByMemberId(@PathVariable String member){
+        return ResponseEntity.ok(paymentService.findByMember(member));
+    }
+
 
 
 }

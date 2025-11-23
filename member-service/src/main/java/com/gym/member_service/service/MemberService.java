@@ -1,12 +1,10 @@
 package com.gym.member_service.service;
 
-import com.gym.member_service.dtos.MemberDTO;
-import com.gym.member_service.dtos.MemberRequest;
-import com.gym.member_service.dtos.MemberUpdateDTO;
-import com.gym.member_service.dtos.MemberWithPayments;
+import com.gym.member_service.dtos.*;
 import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.exception.MemberNotFound;
 import com.gym.member_service.exception.MembershipNotFound;
+import com.gym.member_service.feign.PaymentClient;
 import com.gym.member_service.mapper.MemberMapper;
 import com.gym.member_service.models.Member;
 import com.gym.member_service.repository.MemberRepository;
@@ -24,6 +22,9 @@ public class MemberService {
 
     @Autowired
     private MemberMapper mapper;
+
+    @Autowired
+    private PaymentClient paymentClient;
 
     /// ----CRUD OPERATIONS---
     //Create
@@ -77,6 +78,25 @@ public class MemberService {
 
     //Get historial of payments for a member
     public MemberWithPayments findWithPayments(String idMember){
-        
+        //Get member:
+        MemberDTO member= getById(idMember);
+
+        //Get all payments:
+        List<PaymentDTO> paymentsForMember= paymentClient.getAll().getBody()
+                .stream()
+                .filter(payment -> payment.getMember().equals(idMember))
+                .toList();
+
+        //Build dto
+        return MemberWithPayments.builder()
+                .idMember(idMember)
+                .name(member.getName())
+                .lastName(member.getLastName())
+                .email(member.getEmail())
+                .active(member.getActive())
+                .membershipType(member.getMembershipType())
+                .membershipStartDate(member.getMembershipStartDate())
+                .payments(paymentsForMember)
+                .build();
     }
 }
