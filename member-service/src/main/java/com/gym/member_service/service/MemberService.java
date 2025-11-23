@@ -4,10 +4,12 @@ import com.gym.member_service.dtos.*;
 import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.exception.MemberNotFound;
 import com.gym.member_service.exception.MembershipNotFound;
+import com.gym.member_service.exception.PaymentServiceUnavailableException;
 import com.gym.member_service.feign.PaymentClient;
 import com.gym.member_service.mapper.MemberMapper;
 import com.gym.member_service.models.Member;
 import com.gym.member_service.repository.MemberRepository;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,12 +87,19 @@ public class MemberService {
         List<PaymentDTO> paymentsForMember;
 
         try {
-            List<PaymentDTO> paymentsForMember= paymentClient.getByMemberId(idMember).getBody()
+            paymentsForMember= paymentClient.getByMemberId(idMember).getBody()
                     .stream()
                     .filter(payment->payment.getMember().equals(idMember))
                     .toList();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }
+        catch (FeignException.NotFound e) {
+            paymentsForMember = List.of(); // no hay pagos
+        }
+        catch (FeignException.ServiceUnavailable e) {
+            throw new PaymentServiceUnavailableException("Payment service is unavailable.");
+        }
+        catch (FeignException e) {
+            throw new RuntimeException("Error communicating with payment service: " + e.contentUTF8());
         }
 
 

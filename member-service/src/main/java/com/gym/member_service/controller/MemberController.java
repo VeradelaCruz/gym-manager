@@ -3,6 +3,7 @@ package com.gym.member_service.controller;
 import com.gym.member_service.dtos.MemberDTO;
 import com.gym.member_service.dtos.MemberRequest;
 import com.gym.member_service.dtos.MemberUpdateDTO;
+import com.gym.member_service.dtos.MemberWithPayments;
 import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.service.MemberService;
 import jakarta.validation.Valid;
@@ -56,5 +57,10 @@ public class MemberController {
     public ResponseEntity<List<MemberDTO>> getByMembership(@PathVariable MembershipType membershipType){
         List<MemberDTO> members= memberService.findByMembership(membershipType);
         return ResponseEntity.ok(members);
+    }
+
+    @GetMapping("/withPayment/{idMember}")
+    public ResponseEntity<MemberWithPayments> getWithPayments(@PathVariable String idMember){
+        return ResponseEntity.ok(memberService.findWithPayments(idMember));
     }
 }
