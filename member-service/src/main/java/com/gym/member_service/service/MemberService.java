@@ -82,10 +82,17 @@ public class MemberService {
         MemberDTO member= getById(idMember);
 
         //Get all payments:
-        List<PaymentDTO> paymentsForMember= paymentClient.getAll().getBody()
-                .stream()
-                .filter(payment -> payment.getMember().equals(idMember))
-                .toList();
+        List<PaymentDTO> paymentsForMember;
+
+        try {
+            List<PaymentDTO> paymentsForMember= paymentClient.getByMemberId(idMember).getBody()
+                    .stream()
+                    .filter(payment->payment.getMember().equals(idMember))
+                    .toList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
 
         //Build dto
         return MemberWithPayments.builder()
