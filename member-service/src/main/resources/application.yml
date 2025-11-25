@@ -6,6 +6,24 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/gymdb
 
+  # Configuración de Kafka
+  kafka:
+    bootstrap-servers: localhost:9092  # Broker Kafka
+
+    # Productor: member-service podrá enviar eventos si lo necesita (ej. MemberStatusChangedEvent)
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer   # Convierte la clave a String
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # Convierte objetos Java a JSON automáticamente
+
+    # Consumidor: member-service recibirá eventos (ej. PaymentMadeEvent)
+    consumer:
+      group-id: member-group              # Grupo de consumidores de member-service
+      auto-offset-reset: earliest          # Leer desde el primer mensaje si nunca se conectó
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Cómo leer la clave
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # Cómo leer el valor (JSON)
+      properties:
+        spring.json.trusted-packages: "*"  # Permite deserializar DTOs de otros servicios
+
 eureka:
   client:
     service-url:
@@ -16,4 +34,4 @@ server:
 
 logging:
   level:
-    root: INFO
+    root: INFO 
