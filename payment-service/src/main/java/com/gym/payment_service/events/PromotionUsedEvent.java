@@ -10,9 +10,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PromotionUsedEvent {
-    private String idPromotion;
-    private String member;
-    private String idPayment;
+
+    private String promotionId;
+    private String memberId;
+    private String paymentId;
     private Double discountPercentage;
     private LocalDateTime dateUsed;
 }
+
