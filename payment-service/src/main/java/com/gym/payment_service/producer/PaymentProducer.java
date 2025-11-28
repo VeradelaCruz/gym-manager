@@ -1,4 +1,4 @@
-package com.gym.payment_service.kafka;
+package com.gym.payment_service.producer;
 
 
 import com.gym.payment_service.events.PaymentCreatedEvent;

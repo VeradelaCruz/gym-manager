@@ -9,13 +9,11 @@ import com.gym.payment_service.exeption.MemberServiceUnavailableException;
 import com.gym.payment_service.exeption.PaymentNotFound;
 import com.gym.payment_service.feign.MemberClient;
 import com.gym.payment_service.feign.PromotionClient;
-import com.gym.payment_service.kafka.PaymentProducer;
+import com.gym.payment_service.producer.PaymentProducer;
 import com.gym.payment_service.mapper.PaymentMapper;
 import com.gym.payment_service.models.Payment;
 import com.gym.payment_service.repository.PaymentRepository;
 import feign.FeignException;
-import jakarta.validation.Valid;
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -99,7 +97,6 @@ public class PaymentService {
 
         return mapper.toDto(payment);
     }
-
 
 
     //Read all
