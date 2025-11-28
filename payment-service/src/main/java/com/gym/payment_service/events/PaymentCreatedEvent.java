@@ -16,5 +16,5 @@ public class PaymentCreatedEvent {
     private Double finalAmount;
     private LocalDateTime paymentDate;
     private String promotionId;
-    private Double discountPercentage; 
+    private Long discountPercentage;
 }

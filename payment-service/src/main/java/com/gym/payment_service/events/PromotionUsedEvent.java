@@ -14,7 +14,7 @@ public class PromotionUsedEvent {
     private String promotionId;
     private String memberId;
     private String paymentId;
-    private Double discountPercentage;
+    private Long discountPercentage;
     private LocalDateTime dateUsed;
 }
 

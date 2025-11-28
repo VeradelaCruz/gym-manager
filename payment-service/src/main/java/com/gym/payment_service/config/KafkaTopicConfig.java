@@ -7,6 +7,7 @@ import org.springframework.kafka.config.TopicBuilder;
 
 
 //Esto crea los topics automáticamente cuando el servicio arranca.
+//Aquí creás la clase Java que usa KafkaTemplate para mandar mensajes al tópico.
 @Configuration
 public class KafkaTopicConfig {
 

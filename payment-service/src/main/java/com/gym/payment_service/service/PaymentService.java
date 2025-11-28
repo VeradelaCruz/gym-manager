@@ -1,12 +1,15 @@
 package com.gym.payment_service.service;
 
 import com.gym.payment_service.dtos.*;
+import com.gym.payment_service.events.PaymentCreatedEvent;
+import com.gym.payment_service.events.PromotionUsedEvent;
 import com.gym.payment_service.exeption.MemberNotFound;
 import com.gym.payment_service.exeption.MemberNotValidException;
 import com.gym.payment_service.exeption.MemberServiceUnavailableException;
 import com.gym.payment_service.exeption.PaymentNotFound;
 import com.gym.payment_service.feign.MemberClient;
 import com.gym.payment_service.feign.PromotionClient;
+import com.gym.payment_service.kafka.PaymentProducer;
 import com.gym.payment_service.mapper.PaymentMapper;
 import com.gym.payment_service.models.Payment;
 import com.gym.payment_service.repository.PaymentRepository;
@@ -37,31 +40,66 @@ public class PaymentService {
     @Autowired
     private PromotionClient promotionClient;
 
+    @Autowired
+    private PaymentProducer producer;
+
     /// ----CRUD OPERATIONS---
     //Create payment with a promotion ,  if available
     public PaymentDTO createPayment(PaymentRequest paymentRequest) {
+
         Payment payment = mapper.toEntity(paymentRequest);
         LocalDate today = LocalDate.now();
 
-        // Traer todas las promociones
+        PromotionDTO appliedPromo = null;
+
         List<PromotionDTO> promotions = promotionClient.getAll().getBody();
 
         if (promotions != null) {
-            promotions.stream()
+            appliedPromo = promotions.stream()
                     .filter(promo -> promo.getStartDate() != null && promo.getEndDate() != null)
-                    .filter(promo -> !today.isBefore(promo.getStartDate()) && !today.isAfter(promo.getEndDate()))
-                    .findFirst() // Aplicamos solo la primera promoción activa
-                    .ifPresent(promo -> {
-                        double discountedAmount = payment.getAmount() * (1 - promo.getDiscountPercentage() / 100.0);
-                        payment.setAmount(discountedAmount);
-                    });
+                    .filter(promo -> !today.isBefore(promo.getStartDate()) &&
+                            !today.isAfter(promo.getEndDate()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (appliedPromo != null) {
+                double discountedAmount = payment.getAmount() *
+                        (1 - appliedPromo.getDiscountPercentage() / 100.0);
+                payment.setAmount(discountedAmount);
+            }
         }
 
         payment.setPaymentDate(LocalDateTime.now());
         paymentRepository.save(payment);
 
+        // 🔥 1. EVENTO PRINCIPAL: PaymentCreated
+        PaymentCreatedEvent event = new PaymentCreatedEvent(
+                payment.getIdPayment(),
+                payment.getMember(),
+                payment.getAmount(),
+                payment.getPaymentDate(),
+                appliedPromo != null ? appliedPromo.getIdPromotion() : null,
+                appliedPromo != null ? appliedPromo.getDiscountPercentage() : null
+        );
+
+        producer.sendPaymentCreated(event);
+
+        // 🔥 2. EVENTO ADICIONAL: PromotionUsed
+        if (appliedPromo != null) {
+            PromotionUsedEvent promoEvent = new PromotionUsedEvent(
+                    appliedPromo.getIdPromotion(),
+                    payment.getMember(),
+                    payment.getIdPayment(),
+                    appliedPromo.getDiscountPercentage(),
+                    LocalDateTime.now()
+            );
+
+            producer.sendPromotionUsed(promoEvent);
+        }
+
         return mapper.toDto(payment);
     }
+
 
 
     //Read all
