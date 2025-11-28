@@ -1,4 +1,4 @@
-package com.gym.payment_service.dtos;
+package com.gym.payment_service.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -74,7 +74,7 @@ public class PaymentService {
 
     //Read by id
     public PaymentDTO getById(String idPayment){
-        Payment found= paymentRepository.findById(idPayment)
+       Payment found= paymentRepository.findById(idPayment)
                 .orElseThrow(()-> new PaymentNotFound(idPayment));
         return mapper.toDto(found);
     }
