@@ -13,6 +13,7 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.bouncycastle.asn1.x500.style.RFC4519Style.member;
@@ -32,6 +33,7 @@ public class MemberService {
     //Create
     public MemberDTO createMember(MemberRequest memberRequest){
         Member member= mapper.toEntity(memberRequest);
+        member.setPayments(new ArrayList<>());
         memberRepository.save(member);
         return mapper.toDto(member);
     }
