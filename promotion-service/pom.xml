@@ -85,6 +85,12 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.gym</groupId>
+            <artifactId>payment-service</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 
