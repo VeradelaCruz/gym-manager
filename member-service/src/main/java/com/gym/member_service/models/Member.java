@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Getter
@@ -28,4 +30,7 @@ public class Member {
     private MembershipType membershipType;
     private Boolean active;
 
+
+    // Historial de pagos
+    private List<PaymentRecord> payments = new ArrayList<>();
 }

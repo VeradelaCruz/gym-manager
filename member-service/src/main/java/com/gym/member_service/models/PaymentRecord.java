@@ -16,5 +16,5 @@ public class PaymentRecord {
     private Double amount;
     private LocalDateTime paymentDate;
     private String promotionId;
-    private Double discountPercentage;
+    private Long discountPercentage;
 }

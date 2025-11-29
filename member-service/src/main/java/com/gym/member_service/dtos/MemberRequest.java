@@ -1,5 +1,6 @@
 package com.gym.member_service.dtos;
 
+import com.gym.member_service.models.PaymentRecord;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,8 @@ import lombok.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Getter
@@ -40,4 +43,8 @@ public class MemberRequest {
 
     @NotNull(message = "Active status cannot be null")
     private Boolean active;
+
+    private List<PaymentRecord> payments = new ArrayList<>();
+
+
 }

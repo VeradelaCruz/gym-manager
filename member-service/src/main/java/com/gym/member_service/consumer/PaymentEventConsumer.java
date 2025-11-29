@@ -1,6 +1,8 @@
 package com.gym.member_service.consumer;
 
+import com.gym.member_service.exception.MemberNotFound;
 import com.gym.member_service.models.Member;
+import com.gym.member_service.models.PaymentRecord;
 import com.gym.member_service.repository.MemberRepository;
 import com.gym.payment_service.events.PaymentCreatedEvent;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +19,15 @@ public class PaymentEventConsumer {
 
     @KafkaListener(topics = "payment-created-topic", groupId = "member-group")
     public void consumePaymentEvent(PaymentCreatedEvent event) {
-        System.out.println("Evento de pago recibido: " + event);
+        System.out.println("Payment event received: " + event);
 
-        // 1️⃣ Buscar el miembro
+        //Buscar el miembro
         Optional<Member> optionalMember = memberRepository.findById(event.getMemberId());
 
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
 
-            // 2️⃣ Actualizar historial de pagos
+            //Actualizar historial de pagos
             member.getPayments().add(
                     new PaymentRecord(
                             event.getPaymentId(),
@@ -36,12 +38,12 @@ public class PaymentEventConsumer {
                     )
             );
 
-            // 3️⃣ Guardar cambios en MongoDB
+            //Guardar cambios en MongoDB
             memberRepository.save(member);
 
-            System.out.println("Historial de pagos actualizado para el miembro: " + member.getId());
+            System.out.println("Updated payments for member: " + member.getIdMember());
         } else {
-            System.out.println("Miembro no encontrado: " + event.getMemberId());
+            throw new MemberNotFound(event.getMemberId());
         }
     }
 }
