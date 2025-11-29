@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Getter
@@ -23,6 +25,9 @@ public class Promotion {
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean appliesToMembershipType;
+
+    private List<PromotionUsage> usedHistory = new ArrayList<>();
+
     public boolean isEndDateAfterStartDate() {
         if (startDate == null || endDate == null) return true;
         return endDate.isAfter(startDate);

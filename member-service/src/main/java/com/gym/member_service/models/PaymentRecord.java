@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 
 //Clase embebible donde guardamos el historial de pago de cada miembro:
-//No se usan anotaciones 
+//No se usan anotaciones
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
