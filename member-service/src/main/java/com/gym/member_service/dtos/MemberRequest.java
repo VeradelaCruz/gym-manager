@@ -44,7 +44,6 @@ public class MemberRequest {
     @NotNull(message = "Active status cannot be null")
     private Boolean active;
 
-    private List<PaymentRecord> payments = new ArrayList<>();
 
 
 }
