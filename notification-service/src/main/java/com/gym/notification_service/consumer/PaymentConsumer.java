@@ -1,5 +1,6 @@
 package com.gym.notification_service.consumer;
 
+import com.gym.notification_service.service.EmailTemplateProcessor;
 import com.gym.notification_service.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
