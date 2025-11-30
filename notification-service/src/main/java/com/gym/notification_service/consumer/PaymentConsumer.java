@@ -1,7 +1,6 @@
 package com.gym.notification_service.consumer;
 
 import com.gym.notification_service.service.EmailTemplateProcessor;
-import com.gym.notification_service.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ public class PaymentConsumer {
     private NotificationProcessor notificationProcessor;
 
     @KafkaListener(topics = "payment-done", groupId = "notification-service-group")
-    public void handlePayment(PaymentEvent event) {
+    public void handlePayment(PaymentCreatedEvent event) {
 
         String template = templateProcessor.loadTemplate("payment-confirmation.html");
 

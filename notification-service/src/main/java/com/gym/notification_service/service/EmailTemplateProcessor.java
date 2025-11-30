@@ -5,6 +5,10 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+
+//Propósito:
+//Genera el contenido HTML del email reemplazando valores dinámicos como {{name}} o {{amount}}.
+//Separa la lógica de contenido de la lógica de envío.
 @Component
 public class EmailTemplateProcessor {
 
