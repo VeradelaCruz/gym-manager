@@ -16,7 +16,7 @@ public class EmailTemplateProcessor {
         try {
             return new String(Files.readAllBytes(Paths.get("src/main/resources/templates/" + path)));
         } catch (Exception e) {
-            throw new RuntimeException("Error cargando plantilla", e);
+            throw new RuntimeException("Error", e);
         }
     }
 

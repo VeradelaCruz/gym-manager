@@ -1,15 +1,14 @@
 package com.gym.notification_service.consumer;
 
 import com.gym.notification_service.service.EmailTemplateProcessor;
+import com.gym.notification_service.service.NotificationProcessor;
+import com.gym.payment_service.events.PaymentCreatedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PaymentConsumer {
-
-    @Autowired
-    private NotificationService notificationService;
 
     @Autowired
     private EmailTemplateProcessor templateProcessor;
@@ -20,33 +19,12 @@ public class PaymentConsumer {
     @KafkaListener(topics = "payment-done", groupId = "notification-service-group")
     public void handlePayment(PaymentCreatedEvent event) {
 
+        // Preparar el mensaje usando la plantilla
         String template = templateProcessor.loadTemplate("payment-confirmation.html");
+        template = templateProcessor.replace(template, "id", event.getMemberId());
+        template = templateProcessor.replace(template, "amount", event.getFinalAmount().toString());
+        template = templateProcessor.replace(template, "date", event.getPaymentDate().toString());
 
-        template = templateProcessor.replace(template, "name", event.getMemberName());
-        template = templateProcessor.replace(template, "amount", event.getAmount().toString());
-        template = templateProcessor.replace(template, "date", event.getDate());
-
-        try {
-            emailService.sendHtmlMail(event.getEmail(), "Pago recibido", template);
-
-            notificationProcessor.saveNotification(
-                    event.getUserId(),
-                    event.getEmail(),
-                    "Pago recibido por " + event.getAmount() + "€ el día " + event.getDate(),
-                    "payment-service",
-                    true
-            );
-
-        } catch (Exception e) {
-
-            notificationProcessor.saveNotification(
-                    event.getUserId(),
-                    event.getEmail(),
-                    "Error al enviar notificación de pago",
-                    "payment-service",
-                    false
-            );
-        }
     }
 }
 
