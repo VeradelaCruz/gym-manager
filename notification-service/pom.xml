@@ -87,12 +87,6 @@
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.gym</groupId>
-            <artifactId>payment-service</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-        </dependency>
 
     </dependencies>
 

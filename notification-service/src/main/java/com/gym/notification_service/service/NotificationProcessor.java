@@ -32,7 +32,7 @@ public class NotificationProcessor {
     public void processPaymentCreated(PaymentCreatedEvent event) {
 
         // Obtener el email real del usuario desde member-service
-        String userEmail = obtenerEmailDelUsuario(event.getMemberId());
+        String userEmail = getUserEmail(event.getMemberId());
 
         String message = String.format(
                 "Tu pago (%s) ha sido procesado exitosamente por un total de %.2f€.",
@@ -65,7 +65,7 @@ public class NotificationProcessor {
         notificationRepository.save(notification);
     }
 
-    private String obtenerEmailDelUsuario(String memberId) {
+    private String getUserEmail(String memberId) {
         try {
             MemberDTO member = memberClient.getMemberById(memberId);
             return member.getEmail();

@@ -1,4 +1,4 @@
-package com.gym.member_service.events;
+package com.gym.notification_service.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

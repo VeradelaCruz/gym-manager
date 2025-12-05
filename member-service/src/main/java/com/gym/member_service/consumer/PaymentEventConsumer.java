@@ -4,7 +4,7 @@ import com.gym.member_service.exception.MemberNotFound;
 import com.gym.member_service.models.Member;
 import com.gym.member_service.models.PaymentRecord;
 import com.gym.member_service.repository.MemberRepository;
-import com.gym.payment_service.events.PaymentCreatedEvent;
+import com.gym.member_service.events.PaymentCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

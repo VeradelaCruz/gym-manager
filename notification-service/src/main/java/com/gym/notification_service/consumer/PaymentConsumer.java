@@ -2,7 +2,7 @@ package com.gym.notification_service.consumer;
 
 import com.gym.notification_service.service.EmailTemplateProcessor;
 import com.gym.notification_service.service.NotificationProcessor;
-import com.gym.payment_service.events.PaymentCreatedEvent;
+import com.gym.notification_service.events.PaymentCreatedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
