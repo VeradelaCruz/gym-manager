@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "promotion")
+@Builder
 public class Promotion {
 
     @Id

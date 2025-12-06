@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
-
 @Component
 public class DataSeeder implements CommandLineRunner {
 
-    private final com.gym.promotion_service.repository.PromotionRepository repository;
+    private final PromotionRepository repository;
 
     public DataSeeder(PromotionRepository repository) {
         this.repository = repository;
@@ -20,26 +19,43 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (repository.count() == 0) {
+
             List<Promotion> promotions = List.of(
-                    new Promotion("Promo01", "October Madness", 20L,
-                            LocalDate.of(2025, 10, 1),
-                            LocalDate.of(2025, 10, 31),
-                            true),
+                    Promotion.builder()
+                            .idPromotion("Promo01")
+                            .name("October Madness")
+                            .discountPercentage(20L)
+                            .startDate(LocalDate.of(2025, 10, 1))
+                            .endDate(LocalDate.of(2025, 10, 31))
+                            .appliesToMembershipType(true)
+                            .build(),
 
-                    new Promotion("Promo02", "Autumn Fit", 15L,
-                            LocalDate.of(2025, 9, 15),
-                            LocalDate.of(2025, 10, 15),
-                            false),
+                    Promotion.builder()
+                            .idPromotion("Promo02")
+                            .name("Autumn Fit")
+                            .discountPercentage(15L)
+                            .startDate(LocalDate.of(2025, 9, 15))
+                            .endDate(LocalDate.of(2025, 10, 15))
+                            .appliesToMembershipType(false)
+                            .build(),
 
-                    new Promotion("Promo03", "New Year Shape Up", 25L,
-                            LocalDate.of(2024, 12, 20),
-                            LocalDate.of(2025, 1, 31),
-                            true),
+                    Promotion.builder()
+                            .idPromotion("Promo03")
+                            .name("New Year Shape Up")
+                            .discountPercentage(25L)
+                            .startDate(LocalDate.of(2024, 12, 20))
+                            .endDate(LocalDate.of(2025, 1, 31))
+                            .appliesToMembershipType(true)
+                            .build(),
 
-                    new Promotion("Promo04", "November Gains", 10L,
-                            LocalDate.of(2025, 11, 1),
-                            LocalDate.of(2025, 11, 30),
-                            false)
+                    Promotion.builder()
+                            .idPromotion("Promo04")
+                            .name("November Gains")
+                            .discountPercentage(10L)
+                            .startDate(LocalDate.of(2025, 11, 1))
+                            .endDate(LocalDate.of(2025, 11, 30))
+                            .appliesToMembershipType(false)
+                            .build()
             );
 
             repository.saveAll(promotions);
