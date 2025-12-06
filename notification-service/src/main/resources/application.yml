@@ -23,7 +23,6 @@ spring:
 
       properties:
         spring.json.trusted.packages: "*"
-        spring.json.value.default.type: com.habito.notificationservice.event.PaymentCreatedEvent
 
 eureka:
   client:

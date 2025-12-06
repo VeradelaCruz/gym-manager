@@ -1,6 +1,6 @@
 package com.gym.promotion_service.consumer;
 
-import com.gym.payment_service.events.PromotionUsedEvent;
+import com.gym.promotion_service.events.PromotionUsedEvent;
 import com.gym.promotion_service.models.PromotionUsage;
 import com.gym.promotion_service.repository.PromotionRepository;
 import lombok.RequiredArgsConstructor;
