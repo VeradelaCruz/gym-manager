@@ -70,7 +70,7 @@ public class PaymentService {
         payment.setPaymentDate(LocalDateTime.now());
         paymentRepository.save(payment);
 
-        // 🔥 1. EVENTO PRINCIPAL: PaymentCreated
+        //EVENTO PRINCIPAL: PaymentCreated
         PaymentCreatedEvent event = new PaymentCreatedEvent(
                 payment.getIdPayment(),
                 payment.getMember(),
@@ -82,7 +82,7 @@ public class PaymentService {
 
         producer.sendPaymentCreated(event);
 
-        // 🔥 2. EVENTO ADICIONAL: PromotionUsed
+        //EVENTO ADICIONAL: PromotionUsed
         if (appliedPromo != null) {
             PromotionUsedEvent promoEvent = new PromotionUsedEvent(
                     appliedPromo.getIdPromotion(),
