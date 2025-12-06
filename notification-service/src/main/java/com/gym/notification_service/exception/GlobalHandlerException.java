@@ -1,7 +1,7 @@
 package com.gym.notification_service.exception;
 
 
-import com.gym.payment_service.exeption.MemberNotFound;
+import com.gym.notification_service.exception.MemberNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
