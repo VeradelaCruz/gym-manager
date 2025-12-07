@@ -18,7 +18,12 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: gym_zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://gym_kafka:9092
+      # Escucha todas las interfaces
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      # Anunciado para clientes dentro de Docker y fuera
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT://gym_kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - gym_kafka_net
@@ -69,7 +74,7 @@ services:
       - kafka
     environment:
       KAFKA_CLUSTERS_0_NAME: "local"
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: gym_kafka:9092
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: localhost:9092
     networks:
       - gym_kafka_net
     ports:
