@@ -7,7 +7,8 @@ spring:
       uri: mongodb://localhost:27017/gymdb
 
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: localhost:9092
+
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer

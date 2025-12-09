@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
@@ -18,9 +20,10 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: gym_zookeeper:2181
-      # Escucha todas las interfaces
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      # Anunciado para clientes dentro de Docker y fuera
+      # Advertised listeners:
+      # - localhost:9092 para microservicios en tu host (IntelliJ)
+      # - gym_kafka:9092 para otros contenedores Docker
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT://gym_kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT

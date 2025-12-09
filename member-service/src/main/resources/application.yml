@@ -8,7 +8,7 @@ spring:
 
   # Configuración de Kafka
   kafka:
-    bootstrap-servers: kafka:9092   # Broker Kafka
+    bootstrap-servers: localhost:9092 # Broker Kafka
 
     # Productor: member-service podrá enviar eventos si lo necesita (ej. MemberStatusChangedEvent)
     producer:
