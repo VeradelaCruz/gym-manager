@@ -18,6 +18,7 @@ import java.util.Map;
 public class KafkaProducerConfig {
 
     // Producer para PaymentCreatedEvent
+
     @Bean
     public ProducerFactory<String, PaymentCreatedEvent> paymentProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -31,6 +32,7 @@ public class KafkaProducerConfig {
     public KafkaTemplate<String, PaymentCreatedEvent> paymentKafkaTemplate() {
         return new KafkaTemplate<>(paymentProducerFactory());
     }
+
 
     // Producer para PromotionUsedEvent
     @Bean

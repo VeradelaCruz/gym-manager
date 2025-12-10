@@ -15,10 +15,10 @@ public class PaymentProducer {
     private final KafkaTemplate<String, PromotionUsedEvent> promoKafkaTemplate;
 
     public void sendPaymentCreated(PaymentCreatedEvent event) {
-        paymentKafkaTemplate.send("payment-done", event);
+        paymentKafkaTemplate.send("payment-created-topic", event);
     }
 
     public void sendPromotionUsed(PromotionUsedEvent event) {
-        promoKafkaTemplate.send("promotion-used", event);
+        promoKafkaTemplate.send("promotion-used-topic", event);
     }
 }
