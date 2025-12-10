@@ -19,7 +19,7 @@
         </processorPath>
         <module name="gym-eureka-server" />
       </profile>
-      <profile name="Annotation profile for reservation-service" enabled="true">
+      <profile name="Annotation profile for trainer-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -31,9 +31,9 @@
         <module name="member-service" />
         <module name="class-service" />
         <module name="payment-service" />
+        <module name="trainer-service" />
         <module name="reservation-service" />
         <module name="promotion-service" />
-        <module name="trainer-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

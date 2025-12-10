@@ -20,13 +20,11 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: gym_zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      # Advertised listeners:
-      # - localhost:9092 para microservicios en tu host (IntelliJ)
-      # - gym_kafka:9092 para otros contenedores Docker
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT://gym_kafka:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://gym_kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - gym_kafka_net
@@ -35,16 +33,18 @@ services:
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.6.0
-    container_name: gym_schema-registry
+    container_name: gym_schema_registry
     depends_on:
       - kafka
     environment:
-      SCHEMA_REGISTRY_HOST_NAME: gym_schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://gym_kafka:9092
+      SCHEMA_REGISTRY_HOST_NAME: gym_schema_registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://gym_kafka:29092
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
     networks:
       - gym_kafka_net
     ports:
       - "8081:8081"
+
 
   connect:
     image: confluentinc/cp-kafka-connect:7.6.0
@@ -53,8 +53,9 @@ services:
       - kafka
       - schema-registry
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: gym_kafka:9092
+      CONNECT_BOOTSTRAP_SERVERS: INTERNAL://gym_kafka:29092
       CONNECT_REST_PORT: 8083
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect
       CONNECT_GROUP_ID: "connect-cluster"
       CONNECT_CONFIG_STORAGE_TOPIC: "connect-configs"
       CONNECT_OFFSET_STORAGE_TOPIC: "connect-offsets"
@@ -72,7 +73,7 @@ services:
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
-    container_name: gym_kafka-ui
+    container_name: gym_kafka_ui
     depends_on:
       - kafka
     environment:
