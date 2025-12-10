@@ -11,13 +11,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PaymentProducer {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, PaymentCreatedEvent> paymentKafkaTemplate;
+    private final KafkaTemplate<String, PromotionUsedEvent> promoKafkaTemplate;
 
     public void sendPaymentCreated(PaymentCreatedEvent event) {
-        kafkaTemplate.send("payment-created-topic", event);
+        paymentKafkaTemplate.send("payment-done", event);
     }
 
     public void sendPromotionUsed(PromotionUsedEvent event) {
-        kafkaTemplate.send("promotion-used-topic", event);
+        promoKafkaTemplate.send("promotion-used", event);
     }
 }

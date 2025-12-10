@@ -11,7 +11,7 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
 
-  kafka:
+  Kafka:
     bootstrap-servers: localhost:9092
 
     consumer:

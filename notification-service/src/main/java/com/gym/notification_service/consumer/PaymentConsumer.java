@@ -16,7 +16,7 @@ public class PaymentConsumer {
     @Autowired
     private NotificationProcessor notificationProcessor;
 
-    @KafkaListener(topics = "payment-done", groupId = "notification-service-group")
+    @KafkaListener(topics = "payment-created-topic", groupId = "notification-service-group")
     public void handlePayment(PaymentCreatedEvent event) {
 
         // Preparar el mensaje usando la plantilla
