@@ -1,5 +1,8 @@
 package com.gym.payment_service.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gym.payment_service.events.PaymentCreatedEvent;
 import com.gym.payment_service.events.PromotionUsedEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -17,15 +20,20 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    // Producer para PaymentCreatedEvent
-
     @Bean
     public ProducerFactory<String, PaymentCreatedEvent> paymentProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
+
+        // Para serializar LocalDateTime
+        JsonSerializer<PaymentCreatedEvent> serializer = new JsonSerializer<>(new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        );
+
+        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
     }
 
     @Bean
@@ -33,15 +41,20 @@ public class KafkaProducerConfig {
         return new KafkaTemplate<>(paymentProducerFactory());
     }
 
-
-    // Producer para PromotionUsedEvent
+    // Lo mismo para PromotionUsedEvent
     @Bean
     public ProducerFactory<String, PromotionUsedEvent> promoProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
+
+        JsonSerializer<PromotionUsedEvent> serializer = new JsonSerializer<>(new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        );
+
+        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
     }
 
     @Bean

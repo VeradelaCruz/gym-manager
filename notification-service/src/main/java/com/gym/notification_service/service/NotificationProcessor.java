@@ -7,6 +7,7 @@ import com.gym.notification_service.repository.NotificationRepository;
 import com.gym.notification_service.events.PaymentCreatedEvent;
 import com.gym.notification_service.exception.MemberNotFound;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,24 +22,21 @@ import java.time.LocalDateTime;
 //Guardar/actualizar en Mongo
 //Mantiene tu @KafkaListener limpio y enfocado solo en recibir eventos.
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class NotificationProcessor {
 
-    private final NotificationRepository notificationRepository;
-    private final EmailSenderService emailSenderService;
-    @Autowired
-    private MemberClient memberClient; // Inyectamos Feign Client
+    private NotificationRepository notificationRepository;
+    private EmailSenderService emailSenderService;
+    private MemberClient memberClient; // Feign client
 
-    public void processPaymentCreated(PaymentCreatedEvent event) {
+    public void processPaymentCreated(PaymentCreatedEvent event, String message) {
 
-        // Obtener el email real del usuario desde member-service
-        String userEmail = getUserEmail(event.getMemberId());
-
-        String message = String.format(
-                "Tu pago (%s) ha sido procesado exitosamente por un total de %.2f€.",
-                event.getPaymentId(),
-                event.getFinalAmount()
-        );
+        String userEmail;
+        try {
+            userEmail = memberClient.getMemberById(event.getMemberId()).getEmail();
+        } catch (Exception e) {
+            userEmail = "no-email@example.com"; // fallback
+        }
 
         Notification notification = Notification.builder()
                 .userId(event.getMemberId())
@@ -47,13 +45,11 @@ public class NotificationProcessor {
                 .type("EMAIL")
                 .sourceService("payment-service")
                 .sent(false)
-                .sentAt(null)
                 .createdAt(LocalDateTime.now())
                 .build();
 
         notificationRepository.save(notification);
 
-        // Intentar enviar email
         try {
             emailSenderService.sendEmail(userEmail, "Pago confirmado", message);
             notification.setSent(true);
@@ -64,13 +60,5 @@ public class NotificationProcessor {
 
         notificationRepository.save(notification);
     }
-
-    private String getUserEmail(String memberId) {
-        try {
-            MemberDTO member = memberClient.getMemberById(memberId);
-            return member.getEmail();
-        } catch (Exception e) {
-            return String.valueOf(new MemberNotFound(memberId));
-        }
-    }
 }
+
