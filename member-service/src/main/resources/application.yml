@@ -23,6 +23,7 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # Cómo leer el valor (JSON)
       properties:
         spring.json.trusted-packages: "*"  # Permite deserializar DTOs de otros servicios
+        spring.json.use.type.headers: false
 
 eureka:
   client:

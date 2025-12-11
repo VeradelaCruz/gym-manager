@@ -25,9 +25,9 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class NotificationProcessor {
 
-    private NotificationRepository notificationRepository;
-    private EmailSenderService emailSenderService;
-    private MemberClient memberClient; // Feign client
+    private final NotificationRepository notificationRepository;
+    private final EmailSenderService emailSenderService;
+    private final MemberClient memberClient;
 
     public void processPaymentCreated(PaymentCreatedEvent event, String message) {
 

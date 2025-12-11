@@ -25,7 +25,7 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         JsonDeserializer<PaymentCreatedEvent> deserializer =
-                new JsonDeserializer<>(PaymentCreatedEvent.class);
+                new JsonDeserializer<>(PaymentCreatedEvent.class, false);
         deserializer.addTrustedPackages("*");
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
