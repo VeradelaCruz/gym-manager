@@ -8,22 +8,15 @@ spring:
 
   # Configuración de Kafka
   kafka:
-    bootstrap-servers: localhost:9092 # Broker Kafka
-
-    # Productor: member-service podrá enviar eventos si lo necesita (ej. MemberStatusChangedEvent)
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer   # Convierte la clave a String
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # Convierte objetos Java a JSON automáticamente
-
-    # Consumidor: member-service recibirá eventos (ej. PaymentCreatedEvent)
     consumer:
-      group-id: member-group              # Grupo de consumidores de member-service
-      auto-offset-reset: earliest          # Leer desde el primer mensaje si nunca se conectó
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Cómo leer la clave
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # Cómo leer el valor (JSON)
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: member-group
+      auto-offset-reset: earliest
       properties:
-        spring.json.trusted-packages: "*"  # Permite deserializar DTOs de otros servicios
+        spring.json.trusted-packages: "com.gym.payment_service.events"
         spring.json.use.type.headers: false
+        spring.json.value.default.type: com.gym.payment_service.events.PaymentCreatedEvent
 
 eureka:
   client:
