@@ -16,7 +16,7 @@ spring:
       properties:
         spring.json.trusted-packages: "com.gym.payment_service.events"
         spring.json.use.type.headers: false
-        spring.json.value.default.type: com.gym.payment_service.events.PaymentCreatedEvent
+        spring.json.value.default.type: com.gym.member_service.events.PaymentCreatedEvent
 
 eureka:
   client:
