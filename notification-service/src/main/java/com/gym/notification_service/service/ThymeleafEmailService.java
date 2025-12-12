@@ -19,6 +19,7 @@ public class ThymeleafEmailService {
         context.setVariable("amount", amount);
         context.setVariable("date", date);
 
-        return templateEngine.process("payment-received.html", context);
+        return templateEngine.process("payment-confirmation.html", context);
+
     }
 }
