@@ -1,0 +1,24 @@
+package com.gym.notification_service.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+
+import org.thymeleaf.context.Context;
+import java.time.LocalDateTime;
+
+@Service
+@RequiredArgsConstructor
+public class ThymeleafEmailService {
+
+    private final TemplateEngine templateEngine;
+
+    public String generatePaymentEmail(String name, Double amount, LocalDateTime date) {
+        Context context = new Context();
+        context.setVariable("name", name);
+        context.setVariable("amount", amount);
+        context.setVariable("date", date);
+
+        return templateEngine.process("payment-received.html", context);
+    }
+}

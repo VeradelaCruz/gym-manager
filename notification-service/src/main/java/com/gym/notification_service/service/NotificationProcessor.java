@@ -28,28 +28,24 @@ public class NotificationProcessor {
     private final NotificationRepository notificationRepository;
     private final EmailSenderService emailSenderService;
     private final MemberClient memberClient;
-    private final EmailTemplateProcessor templateProcessor;
+    private final ThymeleafEmailService thymeleafEmailService;
 
     public void processPaymentCreated(PaymentCreatedEvent event) {
 
-        // Obtenemos datos del miembro
         var member = memberClient.getMemberById(event.getMemberId());
         String userEmail = member.getEmail();
-        String memberName = member.getName();
 
-        // Cargamos la plantilla
-        String template = templateProcessor.loadTemplate("payment-received.html");
+        // Generamos el mensaje con Thymeleaf
+        String message = thymeleafEmailService.generatePaymentEmail(
+                member.getName(),
+                event.getFinalAmount(),
+                event.getPaymentDate()
+        );
 
-        //Reemplazamos placeholders
-        template = templateProcessor.replace(template, "name", memberName);
-        template = templateProcessor.replace(template, "amount", String.valueOf(event.getFinalAmount()));
-        template = templateProcessor.replace(template, "date", event.getPaymentDate().toString());
-
-        //Guardamos notificación
         Notification notification = Notification.builder()
                 .userId(event.getMemberId())
                 .email(userEmail)
-                .message(template)
+                .message(message)
                 .type("EMAIL")
                 .sourceService("payment-service")
                 .sent(false)
@@ -58,9 +54,8 @@ public class NotificationProcessor {
 
         notificationRepository.save(notification);
 
-        // Enviamos mail
         try {
-            emailSenderService.sendEmail(userEmail, "Pago confirmado", template);
+            emailSenderService.sendEmail(userEmail, "Pago confirmado", message);
             notification.setSent(true);
             notification.setSentAt(LocalDateTime.now());
         } catch (Exception e) {
