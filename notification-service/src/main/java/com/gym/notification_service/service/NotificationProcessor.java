@@ -1,14 +1,10 @@
 package com.gym.notification_service.service;
 
-import com.gym.notification_service.dtos.MemberDTO;
 import com.gym.notification_service.feign.MemberClient;
 import com.gym.notification_service.models.Notification;
 import com.gym.notification_service.repository.NotificationRepository;
 import com.gym.notification_service.events.PaymentCreatedEvent;
-import com.gym.notification_service.exception.MemberNotFound;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
