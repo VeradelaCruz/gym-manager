@@ -83,7 +83,8 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
-    </dependencies>
+
+	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
