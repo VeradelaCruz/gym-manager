@@ -11,7 +11,11 @@ import org.springframework.stereotype.Component;
 public class MemberConsumer {
     private final NotificationProcessor notificationProcessor;
 
-    @KafkaListener(topics = "member-created-topic", groupId = "notification-service-group")
+    @KafkaListener(
+            topics = "member-created-topic",
+            groupId = "notification-service-group",
+            containerFactory = "memberKafkaListenerContainerFactory"
+    )
     public void handleNewMember(NewMemberEvent event) {
         notificationProcessor.processNewMember(event);
         // Solo pasamos el evento, el processor se encarga de generar el mensaje
