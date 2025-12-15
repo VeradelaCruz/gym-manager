@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 
 import org.thymeleaf.context.Context;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -24,8 +26,15 @@ public class ThymeleafEmailService {
 
     }
 
-    public String generateNewMemberEmail(NewMemberEvent event) {
+    public String generateNewMemberEmail(String name, String lastName, LocalDate membershipStartDate,
+                                         String membershipType, String email, String phone) {
         Context context = new Context();
-        context.setVariable("name", event.getName());
+        context.setVariable("name", name);
+        context.setVariable("lastName", lastName);
+        context.setVariable("membershipStartDate", membershipStartDate);
+        context.setVariable("membershipType", membershipType);
+        context.setVariable("email", email);
+        context.setVariable("phone", phone);
+        return templateEngine.process("welcome-member.html", context);
     }
 }

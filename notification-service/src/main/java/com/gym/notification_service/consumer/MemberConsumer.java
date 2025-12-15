@@ -1,7 +1,6 @@
 package com.gym.notification_service.consumer;
 
 import com.gym.notification_service.events.NewMemberEvent;
-import com.gym.notification_service.events.PaymentCreatedEvent;
 import com.gym.notification_service.service.NotificationProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
