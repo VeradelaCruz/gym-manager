@@ -1,6 +1,5 @@
 package com.gym.notification_service.service;
 
-import com.gym.notification_service.events.NewMemberEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;

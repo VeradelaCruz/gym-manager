@@ -63,6 +63,12 @@ public class NotificationProcessor {
     }
 
     public void processNewMember(NewMemberEvent event) {
+        // Generamos el mensaje con Thymeleaf
+        String message = thymeleafEmailService.generateNewMemberEmail(
+                NewMemberEvent.getName(),
+                event.getFinalAmount(),
+                event.getPaymentDate()
+        );
         
     }
 }

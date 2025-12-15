@@ -1,7 +1,10 @@
 package com.gym.notification_service.service;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +15,22 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class EmailSenderService {
 
-    private JavaMailSender mailSender;
-    public void sendEmail(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        mailSender.send(message);
+    private final JavaMailSender mailSender;
+
+    public void sendHtmlEmail(String to, String subject, String htmlBody) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper =
+                    new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlBody, true); // 👈 HTML = true
+
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error sending HTML email", e);
+        }
     }
 }
+
