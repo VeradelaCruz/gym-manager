@@ -12,7 +12,7 @@ public class MemberConsumer {
     private final NotificationProcessor notificationProcessor;
 
     @KafkaListener(topics = "member-created-topic", groupId = "notification-service-group")
-    public void handlePayment(NewMemberEvent event) {
+    public void handleNewMember(NewMemberEvent event) {
         notificationProcessor.processNewMember(event);
         // Solo pasamos el evento, el processor se encarga de generar el mensaje
         System.out.println("Notification processed for memberId: " + event.getIdMember());
