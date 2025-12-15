@@ -1,5 +1,6 @@
 package com.gym.notification_service.service;
 
+import com.gym.notification_service.events.NewMemberEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -21,5 +22,10 @@ public class ThymeleafEmailService {
 
         return templateEngine.process("payment-confirmation.html", context);
 
+    }
+
+    public String generateNewMemberEmail(NewMemberEvent event) {
+        Context context = new Context();
+        context.setVariable("name", event.getName());
     }
 }

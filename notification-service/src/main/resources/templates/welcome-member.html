@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<body style="font-family: Arial;">
+
+<h2>¡Bienvenido/a a Gym Manager 💪!</h2>
+
+<p>
+    Hola <b th:text="${name}">Nombre</b> <b th:text="${lastName}">Apellido</b>,
+</p>
+
+<p>
+    ¡Nos alegra darte la bienvenida! Tu membresía ya fue creada correctamente y
+    a partir del <b th:text="${membershipStartDate}">2025-12-15</b> ya formas parte de nuestra comunidad.
+</p>
+
+<p>
+    <b>Tipo de membresía:</b>
+    <span th:text="${membershipType}">Premium</span>
+</p>
+
+<p>
+    Hemos registrado los siguientes datos de contacto:
+</p>
+
+<ul>
+    <li><b>Email:</b> <span th:text="${email}">email@example.com</span></li>
+    <li><b>Teléfono:</b> <span th:text="${phone}">123456789</span></li>
+</ul>
+
+<p>
+    Si alguno de estos datos no es correcto o tienes cualquier duda, no dudes en contactarnos.
+</p>
+
+<p>
+    ¡Te esperamos para empezar a entrenar juntos! 🏋️‍♀️🔥
+</p>
+
+<p>
+    <b>Equipo Gym Manager</b>
+</p>
+
+</body>
+</html>

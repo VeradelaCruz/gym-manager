@@ -1,5 +1,6 @@
 package com.gym.notification_service.service;
 
+import com.gym.notification_service.events.NewMemberEvent;
 import com.gym.notification_service.feign.MemberClient;
 import com.gym.notification_service.models.Notification;
 import com.gym.notification_service.repository.NotificationRepository;
@@ -59,5 +60,9 @@ public class NotificationProcessor {
         }
 
         notificationRepository.save(notification);
+    }
+
+    public void processNewMember(NewMemberEvent event) {
+        
     }
 }

@@ -2,12 +2,14 @@ package com.gym.member_service.service;
 
 import com.gym.member_service.dtos.*;
 import com.gym.member_service.enums.MembershipType;
+import com.gym.member_service.events.NewMemberEvent;
 import com.gym.member_service.exception.MemberNotFound;
 import com.gym.member_service.exception.MembershipNotFound;
 import com.gym.member_service.exception.PaymentServiceUnavailableException;
 import com.gym.member_service.feign.PaymentClient;
 import com.gym.member_service.mapper.MemberMapper;
 import com.gym.member_service.models.Member;
+import com.gym.member_service.producer.MemberProducer;
 import com.gym.member_service.repository.MemberRepository;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,30 @@ public class MemberService {
     @Autowired
     private PaymentClient paymentClient;
 
+    @Autowired
+    private MemberProducer memberProducer;
+
     /// ----CRUD OPERATIONS---
     //Create
     public MemberDTO createMember(MemberRequest memberRequest){
         Member member= mapper.toEntity(memberRequest);
         member.setPayments(new ArrayList<>());
         memberRepository.save(member);
+
+        //Evento:
+        NewMemberEvent event= new NewMemberEvent();
+        event.setIdMember(memberRequest.getIdMember());
+        event.setName(memberRequest.getName());
+        event.setEmail(memberRequest.getEmail());
+        event.setPhone(memberRequest.getPhone());
+        event.setLastName(memberRequest.getLastName());
+        event.setMembershipType(member.getMembershipType());
+        event.setMembershipStartDate(memberRequest.getMembershipStartDate());
+
+        //Llamamos al productor
+        memberProducer.sendNewMemberEvent(event);
+
+
         return mapper.toDto(member);
     }
 
