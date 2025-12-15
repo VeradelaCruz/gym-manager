@@ -25,7 +25,7 @@ public class EmailSenderService {
 
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(htmlBody, true); // 👈 HTML = true
+            helper.setText(htmlBody, true);
 
             mailSender.send(message);
         } catch (MessagingException e) {

@@ -52,7 +52,7 @@ public class NotificationProcessor {
         notificationRepository.save(notification);
 
         try {
-            emailSenderService.sendEmail(userEmail, "Pago confirmado", message);
+            emailSenderService.sendHtmlEmail(userEmail, "Pago confirmado", message);
             notification.setSent(true);
             notification.setSentAt(LocalDateTime.now());
         } catch (Exception e) {
@@ -63,12 +63,46 @@ public class NotificationProcessor {
     }
 
     public void processNewMember(NewMemberEvent event) {
-        // Generamos el mensaje con Thymeleaf
+
+        String userEmail = event.getEmail();
+
+        //HTML con Thymeleaf
         String message = thymeleafEmailService.generateNewMemberEmail(
-                NewMemberEvent.getName(),
-                event.getFinalAmount(),
-                event.getPaymentDate()
+                event.getName(),
+                event.getLastName(),
+                event.getMembershipStartDate(),
+                event.getMembershipType(),
+                event.getEmail(),
+                event.getPhone()
         );
-        
+
+        // Guardo la notificación
+        Notification notification = Notification.builder()
+                .userId(event.getIdMember())
+                .email(userEmail)
+                .message(message)
+                .type("EMAIL")
+                .sourceService("member-service")
+                .sent(false)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        notificationRepository.save(notification);
+
+        // Envia el mail
+        try {
+            emailSenderService.sendHtmlEmail(
+                    userEmail,
+                    "¡Bienvenido/a a Gym Manager!",
+                    message
+            );
+            notification.setSent(true);
+            notification.setSentAt(LocalDateTime.now());
+        } catch (Exception e) {
+            notification.setSent(false);
+        }
+
+        notificationRepository.save(notification);
     }
+
 }
