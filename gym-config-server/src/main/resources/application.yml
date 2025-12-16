@@ -4,8 +4,13 @@ server:
 spring:
   application:
     name: gym-config-server
+
   cloud:
     config:
       server:
         git:
-          uri: file:///C:/path/a/tu/config-repo
+          uri: C:\Users\maida\OneDrive\Escritorio\Proyectos\gym-manager\gym-config-repo
+          default-label: main
+          search-paths: .
+
+
