@@ -109,14 +109,39 @@ public class NotificationProcessor {
     public void processReservation(ReservationMadeEvent event) {
         var member = memberClient.getMemberById(event.getMember());
         String userEmail = member.getEmail();
-        String nameMember= member.getName();
-        String lastNameMember = member.getLastName();
+
 
         // Generamos el mensaje con Thymeleaf
         String message = thymeleafEmailService.generateReservationMail(
-                event.getMember(),
-                event.get,
-                event.getPaymentDate()
+                member.getName(),
+                member.getLastName(),
+                event.getFitnessClass(),
+                event.getReservationDate()
         );
+
+        //Guardar la notificacion:
+        Notification notification = Notification.builder()
+                .userId(event.getIdReservation())
+                .email(userEmail)
+                .message(message)
+                .type("EMAIL")
+                .sourceService("reservation-service")
+                .sent(false)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        notificationRepository.save(notification);
+        // 4️⃣ Enviar el mail
+        try {
+            emailSenderService.sendHtmlEmail(
+                    userEmail,
+                    "¡Tu reserva ha sido confirmada!",
+                    message
+            );
+            notification.setSent(true);
+            notification.setSentAt(LocalDateTime.now());
+        } catch (Exception e) {
+            notification.setSent(false);
+        }
     }
 }
