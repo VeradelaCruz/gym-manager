@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: "configserver:http://localhost:8888"
+
   application:
     name: class-service
 
@@ -6,10 +9,10 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/gymdb
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
 
 server:
   port: 8083
