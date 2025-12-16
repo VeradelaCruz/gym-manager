@@ -3,6 +3,7 @@ package com.gym.reservation_service.service;
 import com.gym.member_service.enums.MembershipType;
 import com.gym.member_service.exception.MembershipNotFound;
 import com.gym.reservation_service.dtos.*;
+import com.gym.reservation_service.events.ReservationMadeEvent;
 import com.gym.reservation_service.exception.*;
 import com.gym.reservation_service.feign.ClassClient;
 import com.gym.reservation_service.feign.MemberClient;
@@ -41,6 +42,13 @@ public class ReservationService {
         validateClassAvailability(request.getFitnessClass());
         Reservation reservation= mapper.toEntity(request);
         reservationRepository.save(reservation);
+        //Evento
+        ReservationMadeEvent event=new ReservationMadeEvent();
+        event.setReservationDate(request.getReservationDate());
+        event.setMember(request.getMember());
+        event.setFitnessClass(request.getFitnessClass());
+        event.setStatus(request.getStatus());
+
         return mapper.toDto(reservation);
     }
 
