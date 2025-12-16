@@ -36,4 +36,15 @@ public class ThymeleafEmailService {
         context.setVariable("phone", phone);
         return templateEngine.process("welcome-member.html", context);
     }
+
+    public String generateReservationMail(String name,String lastName, String fitnessClass,
+                                          LocalDate reservationDate ){
+        Context context = new Context();
+        context.setVariable("name", name);
+        context.setVariable("lastName", lastName);
+        context.setVariable("fitnessClass", fitnessClass);
+        context.setVariable("reservationDate", reservationDate);
+        return templateEngine.process("reservation-made.html", context);
+    }
+
 }

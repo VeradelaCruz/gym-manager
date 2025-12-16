@@ -64,4 +64,6 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(memberConsumerFactory());
         return factory;
     }
+
+    //Reservation
 }

@@ -1,6 +1,7 @@
 package com.gym.notification_service.service;
 
 import com.gym.notification_service.events.NewMemberEvent;
+import com.gym.notification_service.events.ReservationMadeEvent;
 import com.gym.notification_service.feign.MemberClient;
 import com.gym.notification_service.models.Notification;
 import com.gym.notification_service.repository.NotificationRepository;
@@ -105,4 +106,17 @@ public class NotificationProcessor {
         notificationRepository.save(notification);
     }
 
+    public void processReservation(ReservationMadeEvent event) {
+        var member = memberClient.getMemberById(event.getMember());
+        String userEmail = member.getEmail();
+        String nameMember= member.getName();
+        String lastNameMember = member.getLastName();
+
+        // Generamos el mensaje con Thymeleaf
+        String message = thymeleafEmailService.generateReservationMail(
+                event.getMember(),
+                event.get,
+                event.getPaymentDate()
+        );
+    }
 }
