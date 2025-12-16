@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: notification-service
+
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 9d5bcb8fd4bc1c
+    password: 470138647771d5
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+      group-id: notification-service-group
+      auto-offset-reset: earliest
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+
+server:
+  port: 8086
+
+logging:
+  level:
+    root: INFO
