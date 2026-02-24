@@ -9,8 +9,8 @@ spring:
     config:
       server:
         git:
-          uri: C:\Users\maida\OneDrive\Escritorio\Proyectos\gym-manager\gym-config-repo
-          default-label: main
+          uri: file:///C:/Users/maida/Desktop/gym-config-repo/
+          default-label: master
           search-paths: .
 
 

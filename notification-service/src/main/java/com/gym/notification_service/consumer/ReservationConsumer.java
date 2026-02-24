@@ -20,6 +20,6 @@ public class ReservationConsumer {
     public void handleNewReservation(ReservationMadeEvent event) {
         notificationProcessor.processReservation(event);
         // Solo pasamos el evento, el processor se encarga de generar el mensaje
-        System.out.println("Notification processed for memberId: " + event.getIdMember());
+        System.out.println("Notification processed for memberId: " + event.getMember());
     }
 }
