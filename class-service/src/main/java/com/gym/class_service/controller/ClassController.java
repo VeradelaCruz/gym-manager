@@ -14,7 +14,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/class")
+@RequestMapping("/classes")
 public class ClassController {
     @Autowired
     private ClassService classService;
