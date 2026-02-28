@@ -16,6 +16,42 @@ spring:
                 - Path=/api/classes/**
               filters:
                 - StripPrefix=1
+            - id: member-service
+              uri: lb://MEMBER-SERVICE
+              predicates:
+                - Path=/api/members/**
+              filters:
+                - StripPrefix=1
+            - id: notification-service
+              uri: lb://NOTIFICATION-SERVICE
+              predicates:
+                - Path=/api/notifications/**
+              filters:
+                - StripPrefix=1
+            - id: payment-service
+              uri: lb://PAYMENT-SERVICE
+              predicates:
+                - Path=/api/payments/**
+              filters:
+                - StripPrefix=1
+            - id: promotion-service
+              uri: lb://PROMOTION-SERVICE
+              predicates:
+                - Path=/api/promotions/**
+              filters:
+                - StripPrefix=1
+            - id: reservation-service
+              uri: lb://RESERVATION-SERVICE
+              predicates:
+                - Path=/api/reservations/**
+              filters:
+                - StripPrefix=1
+            - id: trainer-service
+              uri: lb://TRAINER-SERVICE
+              predicates:
+                - Path=/api/trainers/**
+              filters:
+                - StripPrefix=1
 
 eureka:
   client:

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/promotion")
+@RequestMapping("/promotions")
 public class PromotionController {
     @Autowired
     private PromotionService promotionService;
