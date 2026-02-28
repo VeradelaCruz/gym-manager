@@ -8,12 +8,15 @@ spring:
   cloud:
     gateway:
       server:
-        web flux:
+        webflux:
           routes:
             - id: class-service
               uri: lb://CLASS-SERVICE
               predicates:
                 - Path=/api/classes/**
+              filters:
+                - StripPrefix=1
+
 eureka:
   client:
     service-url:
