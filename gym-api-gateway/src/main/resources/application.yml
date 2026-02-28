@@ -7,18 +7,13 @@ spring:
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-
-      routes:
-
-        - id: class-service
-          uri: lb://class-service
-          predicates:
-            - Path=/api/classes/**
-
+      server:
+        web flux:
+          routes:
+            - id: class-service
+              uri: lb://CLASS-SERVICE
+              predicates:
+                - Path=/api/classes/**
 eureka:
   client:
     service-url:
