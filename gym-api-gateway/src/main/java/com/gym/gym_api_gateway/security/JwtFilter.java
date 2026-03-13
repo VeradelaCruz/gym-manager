@@ -1,9 +1,10 @@
 package com.gym.gym_api_gateway.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpStatus;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -17,18 +18,21 @@ import reactor.core.publisher.Mono;
 //Comprueba expiración
 @Component
 @RequiredArgsConstructor
-//GatewayFilter → interfaz de Spring Cloud Gateway que permite
-// interceptar todas las requests antes de enviarlas a los microservicios.
-public class JwtFilter implements GatewayFilter {
+public class JwtFilter implements GlobalFilter, Ordered {
 
     private final JwtService jwtService;
 
     @Override
-    //ServerWebExchange exchange → representa la petición y la respuesta HTTP
-    //GatewayFilterChain chain → representa la cadena de filtros que la request
-    // seguirá si pasa la validación
-    public Mono<Void> filter(ServerWebExchange exchange,
-                             GatewayFilterChain chain) {
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+
+        String path = exchange.getRequest().getURI().getPath();
+        if (path == null
+                || path.startsWith("/actuator")
+                || path.startsWith("/eureka")
+                || path.startsWith("/swagger")
+                || path.startsWith("/v3/api-docs")) {
+            return chain.filter(exchange);
+        }
 
         String authHeader = exchange.getRequest()
                 .getHeaders()
@@ -47,5 +51,10 @@ public class JwtFilter implements GatewayFilter {
         }
 
         return chain.filter(exchange);
+    }
+
+    @Override
+    public int getOrder() {
+        return -1;
     }
 }
