@@ -56,3 +56,6 @@ API Gateway enruta las solicitudes:
 - Nombres de servicios en Eureka son mayúsculas (ej., CLASS-SERVICE) pero configs minúsculas
 - Versiones de Spring Boot varían (3.3.5-3.5.7); Spring Cloud 2025.0.x
 - No hay POM padre; cada servicio independiente
+
+## Notas sobre Skills para Agentes de IA
+Cada skill requiere su propio archivo SKILL.md con nombre y descripción, pero pueden agruparse en un solo repo para facilitar la gestión y distribución.

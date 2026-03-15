@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "skills": {
+    "api-design": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "30ba2419b18643073649dd8eccb9a845f8907751b7c8d6f77e29f014baf628e2"
+    },
+    "auth-implementation-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "371c84e03e4b456134fba5427096083b163716517f6210fadcffe887c5f1daae"
+    },
+    "code-review-excellence": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "89b2a6a234f6368b12f0232e1d77bd5ed894115114edf67eb1f2976e153664c0"
+    },
+    "database-schema-design": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "4c33e1db0dbbe6f7c4c99a8a4d38b695d8bc417bcad3f18a34543c8d9bceb79d"
+    },
+    "java-springboot": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "f1b9c6b1277178fc33e5a612761c1cd1cf6ab5f946d05d69d52026d142c0a0c1"
+    },
+    "mentoring-juniors": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "ea3d12e594aea60a35cf174be77bf9efcc6c3c17483c4560966b945102dfc44a"
+    },
+    "noob-mode": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "4ff85b4ddd03d0222eb9526c8fc9a40a83f07e4bb490cc2b524691dd8f8af305"
+    },
+    "security-best-practices": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "c5ddd50338549d28b2edd45cec131d6a231349b0671a093b3b7e3b51d4780ab8"
+    }
+  }
+}
