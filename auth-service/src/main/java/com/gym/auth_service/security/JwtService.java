@@ -15,7 +15,7 @@ import java.util.Date;
 // Maneja JWT directamente.
 //Generar token
 //Extraer username
-//Extraer role
+//Extraer roles
 //Validar firma
 //Validar expiración
 @Component

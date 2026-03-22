@@ -23,7 +23,7 @@ public class AuthController {
         authService.register(
                 request.getUsername(),
                 request.getPassword(),
-                request.getRole(),
+                request.getRoles(),
                 request.getMemberId()
         );
     }
